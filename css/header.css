@@ -1,0 +1,60 @@
+nav .container-fluid{
+    padding-right: 1vw;
+}
+.navbar{
+    --bs-navbar-padding-x:unset;
+    --bs-navbar-padding-y:unset;
+    --bs-navbar-brand-padding-x: unset;
+    --bs-navbar-brand-padding-y: unset;
+    padding: 0%;
+}
+.navbar img{
+    margin: 0%;
+    height: 10vh;
+    width: 50vw;
+}
+.navbar-toggler, .btn{
+    background-color: var(--gr-bg);
+}
+nav .container-fluid{
+    --bs-gutter-x: unset;
+    --bs-gutter-y: unset;
+}
+.nav-link, .dropdown-item, .nav-link:link, .nav-link:visited{
+    color: var(--wh-bg);
+}
+.nav-link:hover, .dropdown-item:hover{
+    color: var(--col);
+    background-color: var(--wh-bg);
+}
+.form-control{
+    padding: 0;
+}
+input[type="search"], input[type="text"], input[type="email"]{
+    background-color: var(--gr-bg);
+    border-radius: 0.8rem;
+}
+input[type="search"]:focus, input[type="text"]:focus, input[type="email"]:focus{
+    background-color: var(--wh-bg);
+}
+.btn:hover, input[type="submit"]:hover, figure button:hover{
+    color: var(--col);
+    background-color: var(--wh-bg);
+}
+
+
+
+/*      RWD      */
+@media all and (min-width:692px){
+    .navbar img{
+        width: 30vw;
+        height: 15vh;
+    }
+
+}
+@media all and (min-width:992px){
+    .navbar img{
+        width: 35vw;
+        height: 20vh;
+    }
+}

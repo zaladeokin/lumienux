@@ -1,0 +1,91 @@
+/*General footer setting*/
+footer{
+    overflow: auto;
+    padding: 1vh 1vw;
+    background-color: var(--gr-bga);
+}
+footer a{
+    text-decoration: none;
+    color: var(--col);
+}
+footer a:hover{
+    color: var(--wh-bg);
+}
+footer li{
+    list-style-type: none;
+}
+footer section{
+    margin-bottom: 2vh;
+    padding: 0 1vw;
+}
+footer div{
+    text-align: center;
+    font-style: oblique;
+    font-size: 0.8em;
+}
+footer h6{
+    font-weight: bold;
+}
+
+/*Section 1: stayed tune*/
+footer fieldset{
+    margin-top: 1vh;
+    border: var(--bd);
+    padding: 1vh 1vw;
+}
+footer legend{
+    font-size: 1em;
+}
+footer input[type="text"], footer input[type="email"]{
+    width: 100%;
+    margin-bottom: 1vh;
+}
+footer input[type="submit"]{
+    display: block;
+    margin: 0 auto;
+}
+
+/*Section 3: contact info*/
+address{
+    margin: 0%;
+    font-style: oblique;
+    padding: 0 1vw;
+}
+/*Section 4: follow us*/
+.fa-brands, .fa-solid, .fa-regular{
+    margin-left: 1vh;
+}
+/*Icon colour*/
+#gmIco{
+    color:#c71610;
+}
+#waIco, #phone{
+    color:#25D366;
+}
+#fb{
+    color: #3b5998;
+}
+#inst{
+    color:  #d62976;
+}
+#location{
+    color: #EA4335;
+}
+
+
+
+
+
+/*      RWD      */
+@media all and (min-width:992px){
+    footer section{
+        display: inline-block;
+        margin-left: 2vw;
+        width: 45vw;
+        float: left;
+    }
+    footer div{
+        width: 100%;
+        clear: both;
+    }
+}
