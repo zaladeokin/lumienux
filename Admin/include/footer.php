@@ -27,6 +27,6 @@
 <div> &copy; lumienux 2023</div>
 
 </footer>
-<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= _DOMAIN_;?>/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

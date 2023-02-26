@@ -13,3 +13,4 @@
       </nav>
 </header>
 <main>
+<?php flashMessage('info'); ?>

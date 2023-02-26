@@ -20,3 +20,7 @@ define( '_ROOT_', $_SERVER['DOCUMENT_ROOT'].'/lumienux');// Root path e.g. C:/xa
 
 //$_SERVER['SCRIPT_NAME'].;//reuest file name with path img/brand/photo.jpg
 define('_CURRENT_FILE_', basename($_SERVER['SCRIPT_NAME'])); //basename() extract file name from path as provided by $_SERVER['SCRIPT_NAME']
+
+
+//Admin Credentials
+define('_ADMIN_', 'zaladeokin@gmail.com');

@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/env.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/fontawesome/css/all.css">
+<link rel="stylesheet" href="<?= _DOMAIN_;?>/lib/css/validation.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/header.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/body.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/footer.css">
