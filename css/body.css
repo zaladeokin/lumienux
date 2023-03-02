@@ -161,6 +161,7 @@ main input[type="submit"]{
 }
 .cart img{
     max-width: 20%;
+    height: 20vh;
     float: left;
 }
 .cart img~div{

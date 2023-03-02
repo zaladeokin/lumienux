@@ -12,6 +12,7 @@ if(isset($_POST['email']) && isset($_POST['password'])){
     $email= filter_var($_POST['email'], FILTER_SANITIZE_STRING); $pass= $_POST['password'];
 
     if($email != ""){
+        $_SESSION['email']= $email;
         $e_val= true;
     }else{
         $_SESSION['email_err']= 'Invalid email.';
@@ -42,6 +43,7 @@ if(isset($_POST['email']) && isset($_POST['password'])){
 <?php
 //View
 include_once('include/header.php');
+$email= repopulate('email');
 ?>
 
 <section>
@@ -51,8 +53,8 @@ include_once('include/header.php');
             <legend>
                 Login to proceed.
             </legend>
-            <label class="zl-form-info" <?= FormFlashMsg('email_err'); ?>>Email&nbsp;<input type="email" name="email"></label>
-            <label class="zl-form-info" <?= FormFlashMsg('pass_err'); ?>>Password&nbsp;<input type="password" name="password"></label>
+            <label>Email&nbsp;<input type="email" name="email" value="<?= $email; ?>"></label>
+            <label>Password&nbsp;<input type="password" name="password"></label>
             <input type="submit" value="Submit">
         </fieldset>
     </form>

@@ -35,18 +35,6 @@ Class Admin extends PDO{
         }
         return $num;
     }
-
-    private function num_row($table){//number of row in a table
-        try{
-            $data= $this->query("SELECT * FROM $table");
-            $num= $data->rowCount();
-          }catch(Exception $e){
-            error_log("Database(Admin) error  ::::". $e->getMessage());
-            $num= false;
-          }
-        return $num;
-    }
-
     
     public function Login($email, $pass){
        $user= $this->get_user($email);

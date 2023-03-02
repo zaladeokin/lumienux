@@ -75,13 +75,10 @@ address{
 
 /*For back-end information*/
 #info{
-    position: fixed;
-    top: 0vh;
-    left: 5vw;
-    width: 90vw;
+    margin:  2vh auto;
+    width: fit-content;
     padding: 1vh 1vw;
-    border-radius: 1em;
-    background-color: black;
+    background-color: var(--gr-bga);
     color: #ff0000;
     font-size: 1em;
     text-align: center;
