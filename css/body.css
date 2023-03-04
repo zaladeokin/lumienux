@@ -9,6 +9,7 @@ main{
 /*Product Layout*/
 .product{
     margin-top: 2vh;
+    clear: both;
 }
 .product h2{
     border-bottom: var(--bd2);
@@ -241,10 +242,10 @@ main input[type="submit"]{
         height: 35vh;
     }
     /*Index*/
-    article:first-child{
+    article:first-of-type{
         width: 35vw
     }
-    article:nth-child(2){
+    article:nth-of-type(2){
         width: 55vw;
     }
     main article{
@@ -283,10 +284,10 @@ main input[type="submit"]{
         height: 40vh;
     }
     /*Index*/
-    main article:first-child{
+    main article:first-of-type{
         width: 25vw
     }
-    main article:nth-child(2){
+    main article:nth-of-type(2){
         width: 65vw;
     }
     main article:only-of-type li{/*Breadcrumbs for category*/

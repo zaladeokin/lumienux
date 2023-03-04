@@ -8,4 +8,4 @@ createTable('reset_password','admin_id INTEGER NOT NULL, token varchar(255) NOT 
 createTable('product','id INTEGER NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL UNIQUE, description TEXT NOT NULL, price INTEGER NOT NULL, stock INTEGER NOT NULL, category ENUM("1", "2", "3", "4", "5") DEFAULT "5", img VARCHAR(255), PRIMARY KEY(id)', $admin);
 //createTable('service','id INTEGER NOT NULL AUTO_INCREMENT, title varchar(255) NOT NULL, description TEXT NOT NULL, price INTEGER NOT NULL,PRIMARY KEY(id)', $admin);
 //createTable('setup_plan','id INTEGER NOT NULL AUTO_INCREMENT, title varchar(255) NOT NULL, description LONGTEXT NOT NULL, price INTEGER NOT NULL,PRIMARY KEY(id)', $admin);
-createTable('suscriber','id INTEGER NOT NULL AUTO_INCREMENT, email varchar(255) NOT NULL, PRIMARY KEY(id)', $admin);
+createTable('suscriber','id INTEGER NOT NULL AUTO_INCREMENT, email varchar(255) NOT NULL UNIQUE, name varchar(255) NOT NULL, PRIMARY KEY(id)', $admin);

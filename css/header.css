@@ -37,10 +37,11 @@ input[type="search"], input[type="text"], input[type="email"], input[type="numbe
 input[type="search"]:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="file"]:focus, [type="password"]:focus, textarea:focus{
     background-color: var(--wh-bg);
 }
-.btn:hover, input[type="submit"]:hover, figure button:hover{
+.btn:hover, input[type="submit"]:hover, figure button:hover, button.pagination:hover, article button:hover{
     color: var(--col);
     background-color: var(--wh-bg);
 }
+
 
 
 

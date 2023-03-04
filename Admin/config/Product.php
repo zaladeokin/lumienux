@@ -24,7 +24,6 @@ Class Product extends PDO{
     private function validate($data){
         //Repopulate form
         $_SESSION['p_name']= $data['product_name']; $_SESSION['p_desc']= $data['product_desc']; $_SESSION['p_price']= $data['product_price']; $_SESSION['p_qty']= $data['product_qty']; $_SESSION['p_cat']= $data['category'];
-        //$validate= false;
         if( $data['product_name']=="" /* || strlen($data['product_name] > 25) */ ){
             $_SESSION['name_err'] = "Product name too long or short.";
             return false;
@@ -60,6 +59,11 @@ Class Product extends PDO{
     }
 
     public function upload($data){
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            $_SESSION['info'] = "<div id='info'>Access denied.</div>";
+            header("Location: "._DOMAIN_."/index.php");
+            return;
+        }
         $valid= $this->validate($data);
         if($valid){
             if( $this->if_exist($data['product_name']) == 0){
@@ -126,6 +130,11 @@ Class Product extends PDO{
     }
 
     public function edit_product($data){
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            $_SESSION['info'] = "<div id='info'>Access denied.</div>";
+            header("Location: "._DOMAIN_."/index.php");
+            return;
+        }
         $product_id= $data['product_id'];
         $product= $this->get_product($product_id);
         $noFile= $sameName= false;
@@ -180,10 +189,20 @@ Class Product extends PDO{
     }
 
     public  function delete_product($id){
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            $_SESSION['info'] = "<div id='info'>Access denied.</div>";
+            header("Location: "._DOMAIN_."/index.php");
+            return;
+        }
+
+        $product= $this->get_product($id);
+
         try{
             $stmt= $this->prepare("DELETE FROM product WHERE id= :id");
             $stmt->execute(array(
                 ':id' => $id));
+            chown(_ROOT_."/img/product/$product[img]", _USER_);
+            unlink(_ROOT_."/img/product/$product[img]");//Delete show image
             $_SESSION['info'] = "<div id='info'>Product deleted.</div>";
             header('Location: product.php?action=product_mgt');
         }catch(Exception $e){
@@ -191,6 +210,29 @@ Class Product extends PDO{
             $_SESSION['info'] = "<div id='info'>An error occurred.</div>";
             header('Location: product.php?action=product_mgt');
         }
+    }
+
+    public function load_product($limit= 30, $off= 0){
+        try{
+            $stmt= $this->query("SELECT id, name, img FROM product ORDER BY id DESC LIMIT $limit OFFSET $off");
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            $_SESSION['info'] = "<div id='info'>An error occurred.</div>";
+            $stmt= false;
+        }
+        return $stmt;
+    }
+
+    public function total_product(){
+        try{
+            $stmt= $this->query("SELECT COUNT(*) FROM product");
+            $num= $stmt->fetchColumn();
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            $_SESSION['info'] = "<div id='info'>An error occurred.</div>";
+            $num= false;
+        }
+        return $num;
     }
     
     

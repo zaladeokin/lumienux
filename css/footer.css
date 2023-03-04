@@ -1,8 +1,21 @@
+/*Pagination button */
+.product .pagination{
+    display: block;
+    margin: 2vh auto;
+    padding: 1vh 1vw;
+    min-height: 3vh;
+    width: fit-content;
+    background-color: var(--gr-bga);
+    font-style: oblique;
+    font-size: 1em;
+}
+
 /*General footer setting*/
 footer{
     overflow: auto;
     padding: 1vh 1vw;
     background-color: var(--gr-bga);
+    clear: both;
 }
 footer a{
     text-decoration: none;

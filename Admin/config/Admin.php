@@ -31,7 +31,7 @@ Class Admin extends PDO{
         }catch(Exception $e){
             error_log("Database(Admin) error  ::::". $e->getMessage());
             $_SESSION['info'] = "<div id='info'>An error occurred.</div>";
-            $user= false;
+            $num= false;
         }
         return $num;
     }
