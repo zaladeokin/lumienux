@@ -212,9 +212,14 @@ Class Product extends PDO{
         }
     }
 
-    public function load_product($limit= 30, $off= 0){
+    public function load_product($limit= 30, $off= 0, $category= false, $advance_filter= false){
+        if($advance_filter){
+            $category= ($category) ? "WHERE (category= '$category') AND ($advance_filter)" : "";
+        }else{
+            $category= ($category) ? "WHERE category= '$category'" : "";
+        }
         try{
-            $stmt= $this->query("SELECT id, name, img FROM product ORDER BY id DESC LIMIT $limit OFFSET $off");
+            $stmt= $this->query("SELECT id, name, img, price FROM product $category ORDER BY id DESC LIMIT $limit OFFSET $off");
         }catch(Exception $e){
             error_log("Database(Admin) error  ::::". $e->getMessage());
             $_SESSION['info'] = "<div id='info'>An error occurred.</div>";
@@ -223,9 +228,14 @@ Class Product extends PDO{
         return $stmt;
     }
 
-    public function total_product(){
+    public function total_product($category= false, $advance_filter= false){
+        if($advance_filter){
+            $category= ($category) ? "WHERE (category= '$category') AND ($advance_filter)" : "";
+        }else{
+            $category= ($category) ? "WHERE category= '$category'" : "";
+        }
         try{
-            $stmt= $this->query("SELECT COUNT(*) FROM product");
+            $stmt= $this->query("SELECT COUNT(*) FROM product $category");
             $num= $stmt->fetchColumn();
         }catch(Exception $e){
             error_log("Database(Admin) error  ::::". $e->getMessage());

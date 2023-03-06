@@ -9,27 +9,27 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
             <ul class="dropdown-menu bg-dark">
-                <li><a class="dropdown-item" href="product.html">All Products</a></li>
+                <li><a class="dropdown-item" href="product.php">All Products</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Batteries</a></li>
-                <li><a class="dropdown-item" href="#">Inverter</a></li>
-                <li><a class="dropdown-item" href="#">Solar Panel</a></li>
-                <li><a class="dropdown-item" href="#">Charge Controller</a></li>
-                <li><a class="dropdown-item" href="#">Accessories</a></li>
+                <li><a class="dropdown-item" href="product.php?category=1">Batteries</a></li>
+                <li><a class="dropdown-item" href="product.php?category=2">Inverter</a></li>
+                <li><a class="dropdown-item" href="product.php?category=3">Solar Panel</a></li>
+                <li><a class="dropdown-item" href="product.php?category=4">Charge Controller</a></li>
+                <li><a class="dropdown-item" href="product.php?category=5">Light</a></li>
+                <li><a class="dropdown-item" href="product.php?category=6">Accessories</a></li>
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
+            <a class="nav-link" href="service.php">Services</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="cart.html">Cart<i class="fa-solid fa-cart-shopping"></i></a>
+            <a class="nav-link" href="cart.php">Cart<i class="fa-solid fa-cart-shopping"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="about.php">About</a>
         </li>
     </ul>
     <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" id="search" placeholder="Search" aria-label="Search">
-        <button class="btn" id="search_btn" type="submit">Search</button>
     </form>
 </div>

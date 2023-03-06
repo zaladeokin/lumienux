@@ -79,7 +79,7 @@ main article:only-of-type{/*if only one <article>*/
     width: 90vw !important;
 }
 main article:only-of-type h1{/*if only one <article>*/
-    text-align: left !important;
+    text-align: center !important;
 }
 main article:only-of-type li{/*Breadcrumbs for category*/
     list-style-type: none;

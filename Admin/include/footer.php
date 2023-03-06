@@ -24,7 +24,7 @@
   <a href="https://instagram.com"><i class="fa-brands fa-instagram fa-2x" id="inst"></i></a>
 </section>
 
-<div> &copy; lumienux 2023</div>
+<div> &copy; lumienux <?= date("Y", time());?></div>
 
 </footer>
 <script src="<?= _DOMAIN_;?>/bootstrap/js/bootstrap.bundle.min.js"></script>

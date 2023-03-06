@@ -22,12 +22,7 @@ function search(){
 
 
 document.getElementById('search').addEventListener("input", search);
-document.getElementById('search_btn').addEventListener("click", function(event){
-    event.preventDefault();
-    if($('#search').val() != ""){
-        search();
-    }
-});
+
 document.getElementById('search').addEventListener("blur", function(event){
     if($('#search').val() == ""){
         document.querySelector('main').innerHTML= initial_content;

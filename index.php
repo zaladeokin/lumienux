@@ -1,37 +1,19 @@
 <?php
 require_once('config/autoload.php');
 
-$limit= 6;
-//pagination API
-if(isset($_POST['page'])){
-    $page= intval($_POST['page']);
-    $pagination= pagination($product->total_product(), $limit, $page);
+//Load product if exist..
+$num_of_row= $product->total_product();
+if($num_of_row != 0){
+    $pagination= pagination($num_of_row, $limit, $page);
     $data= $product->load_product($limit, $pagination['offset']);
-    while($d= $data->fetch(PDO::FETCH_ASSOC)){ 
-        echo <<<_tmp
-            <figure>
-                <a href="checkout.php?id=$d[id]">
-                <img src="img/product/$d[img]">
-                <figcaption>
-                    $d[name]>  
-                </figcaption>
-                </a>
-            </figure>
-        _tmp;
-    }
-    include('include/next_button.php');
-    return; 
 }else{
-    $page= 1;
+    $data= false;
 }
-
 ?>
 
 
 <?php
 //View
-$pagination= pagination($product->total_product(), $limit, $page);
-$data= $product->load_product($limit, $pagination['offset']);
 include_once('include/header.php');
 ?>
 <article>
@@ -60,16 +42,16 @@ while($d= $data->fetch(PDO::FETCH_ASSOC)){ ?>
         <a href="checkout.php?id=<?= $d['id']; ?>">
         <img src="img/product/<?= $d['img']; ?>">
         <figcaption>
-            <?= $d['name']; ?>  
+            <?= htmlentities($d['name']); ?><br>
+            price:&nbsp;&nbsp;&#8358;<?= htmlentities($d['price']); ?>  
         </figcaption>
         </a>
     </figure>
 <?php 
-    }
 }
-include('include/next_button.php'); 
-?>
-</section>
-<?php
+include('include/next_button.php');
+echo "</section>";
+}
+
 include_once('include/footer.php');
 ?>

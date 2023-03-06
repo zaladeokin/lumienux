@@ -72,11 +72,11 @@ if($action == 'edit'){
     header('Location: product.php');
     return;
   }
-  $p_name= isset($_SESSION['p_name']) ? repopulate('p_name') : $data['name'];
-  $p_price= isset($_SESSION['p_price']) ? repopulate('p_price') : $data['price'];
-  $p_qty= isset($_SESSION['p_qty']) ? repopulate('p_qty') : $data['stock'];
-  $p_cat= isset($_SESSION['p_cat']) ? repopulate('p_cat') : $data['category'];
-  $p_desc= isset($_SESSION['p_desc']) ? repopulate('p_desc') : $data['description'];
+  $p_name= isset($_SESSION['p_name']) ? repopulate('p_name') : htmlentities($data['name']);
+  $p_price= isset($_SESSION['p_price']) ? repopulate('p_price') : htmlentities($data['price']);
+  $p_qty= isset($_SESSION['p_qty']) ? repopulate('p_qty') : htmlentities($data['stock']);
+  $p_cat= isset($_SESSION['p_cat']) ? repopulate('p_cat') : htmlentities($data['category']);
+  $p_desc= isset($_SESSION['p_desc']) ? repopulate('p_desc') : htmlentities($data['description']);
   $display_img= $data['img'] != null ? _DOMAIN_."/img/product/$data[img]": null;
   function cat($id, $p_cat){
     $select= ($id == $p_cat) ? 'selected' : '';
@@ -96,7 +96,8 @@ if($action == 'edit'){
             <option value="2" <?= cat('2', $p_cat); ?>>Inverters</option>
             <option value="3" <?= cat('3', $p_cat); ?>>Solar Panels</option>
             <option value="4" <?= cat('4', $p_cat); ?>>Charge Controllers</option>
-            <option value="5" <?= cat('5', $p_cat); ?>>Accessories</option>
+            <option value="5" <?= cat('5', $p_cat); ?>>Light</option>
+            <option value="6" <?= cat('6', $p_cat); ?>>Accessories</option>
         </select>
     </label>
     <label class="zl-form-info" <?= FormFlashMsg('desc_err'); ?>>Product description<br><textarea name="product_desc" placeholder="Brief description of product here"><?= $p_desc; ?></textarea></label>
@@ -164,7 +165,8 @@ function cat($id, $p_cat){
             <option value="2" <?= cat('2', $p_cat); ?>>Inverters</option>
             <option value="3" <?= cat('3', $p_cat); ?>>Solar Panels</option>
             <option value="4" <?= cat('4', $p_cat); ?>>Charge Controllers</option>
-            <option value="5" <?= cat('5', $p_cat); ?>>Accessories</option>
+            <option value="5" <?= cat('5', $p_cat); ?>>Light</option>
+            <option value="6" <?= cat('6', $p_cat); ?>>Accessories</option>
         </select>
     </label>
     <label class="zl-form-info" <?= FormFlashMsg('desc_err'); ?>>Product description<br><textarea name="product_desc" placeholder="Brief description of product here"><?= $p_desc; ?></textarea></label>
@@ -192,11 +194,11 @@ if($action == 'delete'){
       header('Location: product.php');
       return;
     }
-    $p_name= $data['name'];
-    $p_price= $data['price'];
-    $p_qty= $data['stock'];
-    $p_cat= $data['category'];
-    $p_desc= $data['description'];
+    $p_name= htmlentities($data['name']);
+    $p_price= htmlentities($data['price']);
+    $p_qty= htmlentities($data['stock']);
+    $p_cat= htmlentities($data['category']);
+    $p_desc= htmlentities($data['description']);
     $display_img=  _DOMAIN_."/img/product/$data[img]"; 
   
 ?>
@@ -233,7 +235,8 @@ if($action == 'delete'){
   <option value="2">Inverters</option>
   <option value="3">Solar Panels</option>
   <option value="4">Charge Controllers</option>
-  <option value="5">Accessories</option>
+  <option value="5">>Light</option>
+  <option value="6">Accessories</option>
 </select>
 <br><br>
 <input type="search" id="search" placeholder="Enter product name" ?>
