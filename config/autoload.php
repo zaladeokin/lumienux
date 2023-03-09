@@ -10,6 +10,13 @@ require_once(_ROOT_.'/lib/zlib.php');
 Any cookie work goes here....
 
 */
+if(_CURRENT_FILE_ =='checkout.php' || _CURRENT_FILE_ =='cart.php'){
+    if(isset($_COOKIE['cart'])){
+        $cart= ($_COOKIE['cart'] != "") ? explode(',', $_COOKIE['cart']) : false;
+    }else{
+        $cart= false;
+    }
+}
 
 //Instantiate Product Model
 $product= new Product();

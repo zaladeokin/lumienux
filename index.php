@@ -31,7 +31,7 @@ include_once('include/header.php');
       <li>1.5Kva Setup (180,000 Naira)</li>
       <li>1Kva Setup (230,000 Naira)</li>
     </ul>
-    <a href="service.php"><button>Contact us for your suitable setup plan</button></a><br><br>
+    <a href="https://api.whatsapp.com/send?phone=2347034205664"><button>Contact us for your suitable setup plan</button></a><br><br>
 </article>
 <?php if($data != false){ ?>
 <section class="product">

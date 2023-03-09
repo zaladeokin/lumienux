@@ -50,6 +50,9 @@
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="js/search2.js"></script>
 <?php
+if(_CURRENT_FILE_ == 'cart.php' || _CURRENT_FILE_ == 'checkout.php'){
+  echo '<script src="js/cartCookie.js"></script>';
+}
 if(_CURRENT_FILE_ == 'cart.php'){
     echo '<script src="js/cart.js"></script>';
 }

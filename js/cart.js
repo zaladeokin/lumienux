@@ -1,7 +1,7 @@
 function updateCart(total=0){
     var num_tb= document.getElementsByClassName('cart').length;
     if(num_tb == 0){//Check if cart is not empty
-        document.getElementById('cart_summary').innerHTML='<div>Your Cart is empty.<br><br><a href="product.html">Click here to view our products</a></div>';
+        document.getElementById('cart_summary').innerHTML='<div>Your Cart is empty.<br><br><a href="product.php">Click here to view our products</a></div>';
     }else{
         document.getElementById('total').innerHTML= total;
     }
@@ -60,7 +60,10 @@ for(i=0; i<carts_btn.length; i++){
 
     //Add event listener to remove button
     btn.addEventListener("click", function(event){
-        delete btn_properties[this.closest(".cart").id];//remove deleted car from array storage
+        //Delete id from cookie
+        document.cookie= "cart="+CartEva(extractCookiePair('cart'), btn_properties[this.closest(".cart").id][1], 'delete', true)+"; path=/";
+        window.console && console.log(document.cookie);
+        delete btn_properties[this.closest(".cart").id];//remove deleted cart from array storage
         document.getElementById(this.closest(".cart").id).remove();//delete cart
         updateSummary();//update summary table
     });

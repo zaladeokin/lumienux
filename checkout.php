@@ -6,18 +6,23 @@ if(isset($_GET['id'])){
     $id= intval($_GET['id']);
     $details= ($id > 0) ? $product->get_product($id) : false;
 
+    //Check product in Cart
+    $cart_item= ($cart != false && count($cart) > 0) ? array_search($id, $cart): false;
+    $cart_item_button= ($cart_item !== false) ? "Remove from Cart" : "Add to Cart";
+    $cart_item_status= ($cart_item !== false) ? "delete" : "add";
 }else{
     $details= false;
 }
 
 
-//Load related product if exist..
-$num_of_row= $product->total_product($details['category'], "id != $details[id]");
-if($num_of_row != 0){
-    $pagination= pagination($num_of_row, $limit, $page);
-    $data= $product->load_product($limit, $pagination['offset'], $details['category'], "id != $details[id]");
-}else{
-    $data= false;
+if($details){//Load related product if exist..
+    $num_of_row= $product->total_product($details['category'], "id != $details[id]");
+    if($num_of_row != 0){
+        $pagination= pagination($num_of_row, $limit, $page);
+        $data= $product->load_product($limit, $pagination['offset'], $details['category'], "id != $details[id]");
+    }else{
+        $data= false;
+    }
 }
 ?>
 
@@ -37,8 +42,10 @@ if($details){
             <h2><?= htmlentities($details['name']); ?></h2>
             <div><strong>Description</strong><?= htmlentities($details['description']); ?></div>
             <div><strong>Price</strong>&nbsp;:&nbsp;&#8358;<?= htmlentities($details['price']); ?></div>
-            <div><small>&nbsp;&nbsp;<?= htmlentities($details['stock']); ?> stocks available</small></div> 
-            <button><i class="fa-solid fa-cart-plus"></i>&nbsp;Add to cart</button>
+            <div><small>&nbsp;&nbsp;<?= htmlentities($details['stock']); ?> stocks available</small></div>
+            <input type="hidden" value="<?= htmlentities($details['id']); ?>">
+            <input type="hidden" value="<?= $cart_item_status ?>">
+            <button><i class="fa-solid fa-cart-plus"></i>&nbsp;<?= $cart_item_button; ?></button>
         </figcaption>
     </figure>
 </section>

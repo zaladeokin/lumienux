@@ -10,7 +10,7 @@ nav .container-fluid{
 }
 .navbar img{
     margin: 0%;
-    height: 20vh;
+    /*height: 20vh;*/
     width: 50vw;
 }
 .navbar-toggler, .btn{
@@ -48,14 +48,14 @@ input[type="search"]:focus, input[type="text"]:focus, input[type="email"]:focus,
 /*      RWD      */
 @media all and (min-width:692px){
     .navbar img{
-        width: 30vw;
-        height: 30vh;
+        width: 40vw;
+        /*height: 30vh;*/
     }
 
 }
 @media all and (min-width:992px){
     .navbar img{
         width: 35vw;
-        height: 40vh;
+        /*height: 40vh;*/
     }
 }
