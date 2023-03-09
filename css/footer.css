@@ -36,8 +36,9 @@ footer div{
     font-style: oblique;
     font-size: 0.8em;
 }
-footer h6{
+footer h3{
     font-weight: bold;
+    font-size: 1rem;
 }
 
 /*Section 1: stayed tune*/

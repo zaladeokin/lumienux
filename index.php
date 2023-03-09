@@ -40,7 +40,7 @@ include_once('include/header.php');
 while($d= $data->fetch(PDO::FETCH_ASSOC)){ ?>
     <figure>
         <a href="checkout.php?id=<?= $d['id']; ?>">
-        <img src="img/product/<?= $d['img']; ?>">
+        <img src="img/product/<?= $d['img']; ?>" alt="<?= $d['name']; ?>">
         <figcaption>
             <?= htmlentities($d['name']); ?><br>
             price:&nbsp;&nbsp;&#8358;<?= htmlentities($d['price']); ?>  

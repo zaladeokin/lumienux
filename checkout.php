@@ -33,19 +33,21 @@ if($details){//Load related product if exist..
 //View
 include_once('include/header.php');
 if($details){
+    $stock_stat= (intval($details['stock']) > 0) ? htmlentities($details['stock'])." stocks available" : "Out of stock";
+    $btn_disable= (intval($details['stock']) > 0) ? "" : "disabled= true";
 ?>
 <section id="checkout">
     <h1>Product detail</h1>
     <figure>
-        <img src="img/product/<?= $details['img']; ?>">
+        <img src="img/product/<?= $details['img']; ?>" alt="<?= htmlentities($details['name']); ?>">
         <figcaption>
             <h2><?= htmlentities($details['name']); ?></h2>
             <div><strong>Description</strong><?= htmlentities($details['description']); ?></div>
             <div><strong>Price</strong>&nbsp;:&nbsp;&#8358;<?= htmlentities($details['price']); ?></div>
-            <div><small>&nbsp;&nbsp;<?= htmlentities($details['stock']); ?> stocks available</small></div>
+            <div><small>&nbsp;&nbsp;<?= $stock_stat; ?></small></div>
             <input type="hidden" value="<?= htmlentities($details['id']); ?>">
             <input type="hidden" value="<?= $cart_item_status ?>">
-            <button><i class="fa-solid fa-cart-plus"></i>&nbsp;<?= $cart_item_button; ?></button>
+            <button <?= $btn_disable ?>><i class="fa-solid fa-cart-plus"></i>&nbsp;<?= $cart_item_button; ?></button>
         </figcaption>
     </figure>
 </section>

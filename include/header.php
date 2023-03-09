@@ -19,3 +19,7 @@ if($force_stop){
 </header>
 <main>
 <?php flashMessage('info'); ?>
+<noscript>
+  <h3>JavaScript is disabled on your browser.</h3>
+  <cite>Kindly <strong>enable JavaScript</strong> to be able to use the required features on this website.</cite>
+</noscript>

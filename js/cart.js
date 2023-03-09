@@ -62,7 +62,6 @@ for(i=0; i<carts_btn.length; i++){
     btn.addEventListener("click", function(event){
         //Delete id from cookie
         document.cookie= "cart="+CartEva(extractCookiePair('cart'), btn_properties[this.closest(".cart").id][1], 'delete', true)+"; path=/";
-        window.console && console.log(document.cookie);
         delete btn_properties[this.closest(".cart").id];//remove deleted cart from array storage
         document.getElementById(this.closest(".cart").id).remove();//delete cart
         updateSummary();//update summary table
