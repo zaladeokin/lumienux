@@ -5,7 +5,7 @@
     <h6>Stayed tune with us</h6>
     <ul>
     <li>
-      <a href="">Visit our Blog</a>
+      <a href="http://localhost/lumienux/blog">Visit our Blog</a>
     </li>
     <li>
       <form method="POST" id="newsletter">
