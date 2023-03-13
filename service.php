@@ -15,7 +15,7 @@ include_once('include/header.php');
     <li>Maintenenance</li>
     <li>Troubleshooting</li>
   </ul>
-  <a href="https://api.whatsapp.com/send?phone=2347034205664"><button>Hire an Engineer now</button></a><br><br>
+  <a href="mailto:<?= _ADMIN_; ?>"><button>Hire an Engineer now</button></a><br><br>
     
   </section>
 

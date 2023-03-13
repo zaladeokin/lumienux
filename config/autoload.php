@@ -1,9 +1,8 @@
 <?php
 session_start();
 require_once('Admin/config/config.php');
-require_once(_ROOT_.'/Admin/config/Product.php');
-require_once(_ROOT_.'/Admin/config/Suscriber.php');
-require_once(_ROOT_.'/lib/zlib.php');
+require_once('Admin/config/Product.php');
+require_once('Admin/config/Suscriber.php');
 
 
 /*
@@ -19,7 +18,7 @@ if(_CURRENT_FILE_ =='checkout.php' || _CURRENT_FILE_ =='cart.php'){
 }
 
 //Instantiate Product Model
-$product= new Product();
+$product= new Product(_USER_, _PASS_);
 
 
 
@@ -64,7 +63,7 @@ if(isset($_POST['page'])){
 
 //Newsletter COntroller
 if(isset($_POST['scb_email']) && isset($_POST['scb_name'])){
-$scb= new Suscriber();
+$scb= new Suscriber(_USER_, _PASS_);
 $scb->add($_POST);
 $force_stop= true;
 return;

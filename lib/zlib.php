@@ -15,13 +15,24 @@ function createTable($tname, $tProperty, $pdo){
     /* 
     Uses PDO library to create table for database at the point of setting up database for Application.
     */
-try{
-  $pdo->query("CREATE TABLE IF NOT EXISTS $tname($tProperty) ENGINE = InnoDB");
-  echo "<h1>Table '$tname' created or already exists.</h1><br>";
-}catch(Exception $e){
-  error_log("Database(Admin) error  ::::". $e->getMessage());
-  echo "<h1>An error occurred.</h1>";
+  try{
+    $pdo->query("CREATE TABLE IF NOT EXISTS $tname($tProperty) ENGINE = InnoDB");
+    echo "<h1>Table '$tname' created or already exists.</h1><br>";
+  }catch(Exception $e){
+    error_log("Database(Admin) error  ::::". $e->getMessage());
+    echo "<h1>An error occurred.</h1>";
   }
+}
+
+function setEnv($path= '.env'){
+  /**
+   * This function is to load Credentials in .env file so as to be accessible through getenv() or $_ENV[]
+   * If path to .env file is not specify, it will assume a default value of ".env"
+   * Call this function at the config file or top section of your script
+   */
+  require_once("DotEnv.php"); //Load DotEnv Class
+  (new Zlib\DotEnv($path))->load();//Instatiate class
+
 }
 
 function flashMessage($sesName){
@@ -38,9 +49,9 @@ function flashMessage($sesName){
 function repopulate($sesName, $dmsg="", $unset= true){
   /*
   Repopulate form.
-# $sesName is key of session
-# $unset (default is true), if false will not unset session
-# $dmsg (optional) set default message.
+  # $sesName is key of session
+  # $unset (default is true), if false will not unset session
+  # $dmsg (optional) set default message.
   */
   if ( isset($_SESSION[$sesName]) ) {
     $data= htmlentities($_SESSION[$sesName]);
@@ -117,4 +128,5 @@ function pagination($num_of_row, $limit, $current_page){
    * use conditional flow to hide $next and $previous when there value is zero
    */
 }
+
 ?>

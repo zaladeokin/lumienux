@@ -1,9 +1,8 @@
 <?php
-require_once('config.php');
 
 Class Suscriber extends PDO{
-    function __construct(){
-        Parent::__construct('mysql:host='._HOST_.';port='._PORT_.';dbname='._DB_, _USER_, _PASS_);
+    function __construct($DB_USER, $DB_PASS){
+        Parent::__construct('mysql:host='._HOST_.';port='._PORT_.';dbname='._DB_, $DB_USER, $DB_PASS);
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 

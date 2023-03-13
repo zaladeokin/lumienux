@@ -235,7 +235,7 @@ if($action == 'delete'){
   <option value="2">Inverters</option>
   <option value="3">Solar Panels</option>
   <option value="4">Charge Controllers</option>
-  <option value="5">>Light</option>
+  <option value="5">Light</option>
   <option value="6">Accessories</option>
 </select>
 <br><br>
