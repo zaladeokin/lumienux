@@ -3,6 +3,7 @@ session_start();
 require_once('Admin/config/config.php');
 require_once('Admin/config/Product.php');
 require_once('Admin/config/Suscriber.php');
+require_once('Admin/config/Order.php');
 
 
 /*
@@ -20,7 +21,9 @@ if(_CURRENT_FILE_ =='checkout.php' || _CURRENT_FILE_ =='cart.php'){
 //Instantiate Product Model
 $product= new Product(_USER_, _PASS_);
 
-
+if(_CURRENT_FILE_ =='payment.php' || _CURRENT_FILE_ =='processed.php'){
+    $order= new Order(_USER_, _PASS_);
+}
 
 //pagination API
 $limit= 6;

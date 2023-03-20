@@ -33,8 +33,14 @@ if($details){//Load related product if exist..
 //View
 include_once('include/header.php');
 if($details){
-    $stock_stat= (intval($details['stock']) > 0) ? htmlentities($details['stock'])." stocks available" : "Out of stock";
-    $btn_disable= (intval($details['stock']) > 0) ? "" : "disabled= true";
+    $stock_avail_qty= intval($details['stock']) - intval($details['sold_product']);
+    if($stock_avail_qty > 0){
+        $stock_stat= ($stock_avail_qty > 1) ? $stock_avail_qty." stocks available" : $stock_avail_qty." stock available";
+        $btn_disable= "";
+    }else{
+        $stock_stat= "<span style='color: #ff0000;'>Out of stock</span>";
+        $btn_disable= "disabled= true";
+    }
 ?>
 <section id="checkout">
     <h1>Product detail</h1>

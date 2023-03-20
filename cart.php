@@ -13,16 +13,26 @@ include_once('include/header.php');
 <section>
         <h1>Cart</h1>
 <?php 
-if($cart != false && count($cart) > 0){
+if($cart !== false && count($cart) > 0){
     for($i=0;$i < count($cart);$i++){
         $item_count= $i +1;
         $item= $product->get_product($cart[$i]);
+
+        $stock_avail_qty= intval($item['stock']) - intval($item['sold_product']);
+        if($stock_avail_qty > 0){
+            $stock_stat= ($stock_avail_qty > 1) ? $stock_avail_qty." stocks available" : $stock_avail_qty." stock available";
+            $input_disable= "";
+        }else{
+            $stock_stat= "Out of stock";
+            $input_disable= "disabled= true";
+        }
+
         $i_name= htmlentities($item['name']);
         $i_price= htmlentities($item['price']);
-        $i_stock= htmlentities($item['stock']);
-        $input_disable= (intval($i_stock) > 0) ? "" : "disabled= true";
-        $qty= ($i_stock > 0) ? 1 : 0;
-        $stock_stat= ($i_stock > 0) ? "$i_stock stocks available" : "Out of stock";
+        //$i_stock= htmlentities($item['stock']);
+        //$input_disable= (intval($i_stock) > 0) ? "" : "disabled= true";
+        $qty= ($stock_avail_qty > 0) ? 1 : 0;
+        //$stock_stat= ($i_stock > 0) ? "$i_stock stocks available" : "Out of stock";
         echo <<<_cart
             <div class="cart" id="cart_$item_count">
                 <img src="img/product/$item[img]" alt="$i_name">
@@ -32,8 +42,8 @@ if($cart != false && count($cart) > 0){
                     <span>$stock_stat</span>
                 </div>
                 <div>
-                    <strong>Quantities&nbsp;<input type="number" id="p_qty_$item_count" min="1" max="$i_stock" value="$qty" $input_disable></strong><button>Remove</button>
-                    <input type="hidden" id="p_id_$item_count" value="$item[id]">
+                    <strong>Quantities&nbsp;<input type="number" id="p_qty_$item_count" min="$qty" max="$stock_avail_qty" value="$qty" $input_disable></strong><button>Remove</button>
+                    <input type="hidden" id="p_id_$item_count" class="product_id" value="$item[id]">
                     <input type="hidden" id="p_price_$item_count" value="$i_price">
                 </div>
             </div>
@@ -52,9 +62,10 @@ if($cart != false && count($cart) > 0){
                     <tr><td colspan="4">Total</td><td id="total"></td></tr>
                 </tfoot>
             </table>
-            <form action="#">
+            <form action="payment.php" id="payment" method="POST">
                 <input type="hidden" name="products_id">
                 <input type="hidden" name="products_qty">
+                <input type="hidden" name="order_desc">
             <input type="submit" value="Continue to payment">
             </form>
         </div>

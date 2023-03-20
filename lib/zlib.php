@@ -129,4 +129,66 @@ function pagination($num_of_row, $limit, $current_page){
    */
 }
 
+function get($url, array $header= []){
+  /***
+   * 
+   * This function make a GET request and return false on failure
+   * 
+   * $url ---- Path to resources
+   * $header --- set header parameter Default: Content-Type: application/json' & 'cache-control: no-cache'
+   */
+  $header= count($header) > 0 ? $header : array('Content-Type: application/json', 'cache-control: no-cache');
+
+  $req_obj= curl_init();
+
+  curl_setopt_array($req_obj, array(
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST=> 'GET',
+    CURLOPT_HTTPHEADER => $header
+    ));
+
+    $response= curl_exec($req_obj);
+    curl_close($req_obj);
+    $err= curl_error($req_obj);//if there's error connecting to the API
+    if($err){
+      $response= false;
+    }
+    return $response;
+}
+
+function post($url, array $postData, array $header= []){
+    /***
+   * 
+   * This function make a POST request and return false on failure
+   * 
+   * $url ---- Path to resources
+   * $postData array --- Data to be sent through Post
+   * $header --- set header parameter Default: Content-Type: application/json' & 'cache-control: no-cache'
+   */
+  $header= count($header) > 0 ? $header : array('Content-Type: application/json', 'cache-control: no-cache');
+  $req_obj= curl_init();
+  curl_setopt_array($req_obj, array(
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST=> 'POST',
+    CURLOPT_POSTFIELDS => json_encode($postData),
+    CURLOPT_HTTPHEADER => $header
+    ));
+  $response= curl_exec($req_obj);
+  curl_close($req_obj);
+  $err= curl_error($req_obj);//if there's error connecting to the API
+  if($err || $response == null){
+    $response= false;
+  }
+  return $response;
+}
 ?>

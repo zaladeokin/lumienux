@@ -1,5 +1,13 @@
 function template(data){
-    return '<div class="cart"><img src="../img/product/'+data.img+'" alt="'+data.name+'"><div><span>'+data.name+'</span><span>Price</strong>&nbsp;:&nbsp;'+data.price+'</span><span>'+data.stock+' stocks available</span></div><div><a href="product.php?action=edit&id='+data.id+'"><button>Edit</button></a><a href="product.php?action=delete&id='+data.id+'"><button>Delete</button></a></div></div>';
+    var available= data.stock - data.sold_product;
+    if(available <= 0){
+        available= 'Out of stock';
+    }else if(available == 1){
+        available= '1 stock available';
+    }else{
+        available= data.stock+' stocks available';
+    }
+    return '<div class="cart"><img src="../img/product/'+data.img+'" alt="'+data.name+'"><div><span>'+data.name+'</span><span>Price</strong>&nbsp;:&nbsp;'+data.price+'</span><span>'+available+'</span></div><div><a href="product.php?action=edit&id='+data.id+'"><button>Edit</button></a><a href="product.php?action=delete&id='+data.id+'"><button>Delete</button></a></div></div>';
 }
 function search(){
     $('#spinner').show();

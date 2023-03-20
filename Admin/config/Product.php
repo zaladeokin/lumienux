@@ -21,8 +21,25 @@ Class Product extends PDO{
     }
 
     private function validate($data){
+        //Get product Data from DataBase to validate Quantity sold
+        if(isset($data['qty_sold'])){
+            $item= $this->get_product($data['product_id']);
+            $item_qty= $item['stock'];
+            if($data['qty_sold'] > $item_qty){
+                $_SESSION['qty_sold_err'] = "value exceed stock quantity.";
+                $item_qty_valid= false;
+            }elseif($data['qty_sold'] < 0){
+                $_SESSION['qty_sold_err'] = "Invalid value.";
+                $item_qty_valid= false;
+            }else{
+                $item_qty_valid= true;
+            }
+        }else{//For Upload case where quantity sold is not set
+            $item_qty_valid= true;
+        }
+
         //Repopulate form
-        $_SESSION['p_name']= $data['product_name']; $_SESSION['p_desc']= $data['product_desc']; $_SESSION['p_price']= $data['product_price']; $_SESSION['p_qty']= $data['product_qty']; $_SESSION['p_cat']= $data['category'];
+        $_SESSION['p_name']= $data['product_name']; $_SESSION['p_desc']= $data['product_desc']; $_SESSION['p_price']= $data['product_price']; $_SESSION['qty_sold']= $data['qty_sold']; $_SESSION['p_qty']= $data['product_qty']; $_SESSION['p_cat']= $data['category'];
         if( $data['product_name']=="" /* || strlen($data['product_name] > 25) */ ){
             $_SESSION['name_err'] = "Product name too long or short.";
             return false;
@@ -31,6 +48,8 @@ Class Product extends PDO{
             return false;
         }elseif( $data['product_price'] <= 0 || $data['product_qty'] <= 0){
             $_SESSION['price_err'] = $_SESSION['qty_err'] = "Invalid price or quantity.";
+            return false;
+        }elseif(!$item_qty_valid){
             return false;
         }elseif( $data['category'] == 0 ){
             $_SESSION['cat_err'] = "Select a category for your product.";
@@ -97,10 +116,19 @@ Class Product extends PDO{
     
     public function search($keyword, $category= false){
         $keyword= filter_var($keyword, FILTER_SANITIZE_STRING);
-        $filter= ($category != false) ? "category= '$category' AND (name LIKE :keyword OR description LIKE :keyword)" : "name LIKE :keyword OR description LIKE :keyword";
+        //$filter= ($category != false) ? "category= '$category' AND (name LIKE :keyword OR description LIKE :keyword)" : "name LIKE :keyword OR description LIKE :keyword";
+        if($category !== false){
+            if($category == "7"){//For Admin to edit product that is out of stock
+                $filter= "sold_product = stock AND (name LIKE :keyword OR description LIKE :keyword)";
+            }else{
+                $filter= "category= '$category' AND (name LIKE :keyword OR description LIKE :keyword)";
+            }
+        }else{
+            $filter= "(name LIKE :keyword OR description LIKE :keyword)";
+        }
         $result= array();
         try{
-            $stmt= $this->prepare("SELECT id, name, img, price, stock FROM product WHERE $filter ORDER BY name");
+            $stmt= $this->prepare("SELECT id, name, img, price, stock, sold_product FROM product WHERE $filter ORDER BY stock - sold_product DESC, name");
             $stmt->execute(array(
                 ':keyword' => "%$keyword%"));
             //$keyword= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -155,21 +183,22 @@ Class Product extends PDO{
 
                 //Update product information
                 try{
-                    $update= $this->prepare("UPDATE product SET name= :name, description= :desc, price= :price, stock= :qty, category= :cat, img= :img WHERE id='$product_id'");
+                    $update= $this->prepare("UPDATE product SET name= :name, description= :desc, price= :price, stock= :qty, category= :cat, img= :img, sold_product= :qty_sold WHERE id='$product_id'");
                     $update->execute(array(
                         ':name' => $data['product_name'],
                         ':desc' => $data['product_desc'],
                         ':price' => $data['product_price'],
                         ':qty' => $data['product_qty'],
                         ':cat' => $data['category'],
-                        ':img' => $_FILES['product_img']['name']
+                        ':img' => $_FILES['product_img']['name'],
+                        'qty_sold' => $data['qty_sold']
                     ));
                     if(!$noFile){//Save image if new one is uploaded
                         move_uploaded_file($_FILES['product_img']['tmp_name'], _ROOT_."/img/product/".$_FILES['product_img']['name']);
                         chown(_ROOT_."/img/product/$product[img]", _USER_);
                         unlink(_ROOT_."/img/product/$product[img]");
                     }
-                    unset($_SESSION['p_name']); unset($_SESSION['p_desc']); unset($_SESSION['p_price']); unset($_SESSION['p_qty']); unset($_SESSION['p_cat']);
+                    unset($_SESSION['p_name']); unset($_SESSION['qty_sold']); unset($_SESSION['p_desc']); unset($_SESSION['p_price']); unset($_SESSION['p_qty']); unset($_SESSION['p_cat']);
                     $_SESSION['info'] = "<div id='info'>Product edited successfully.</div>";
                     header("Location: product.php?action=edit&id=$product_id");
                 }catch(Exception $e){
@@ -218,7 +247,7 @@ Class Product extends PDO{
             $category= ($category) ? "WHERE category= '$category'" : "";
         }
         try{
-            $stmt= $this->query("SELECT id, name, img, price FROM product $category ORDER BY id DESC LIMIT $limit OFFSET $off");
+            $stmt= $this->query("SELECT id, name, img, price FROM product $category ORDER BY stock - sold_product DESC, id DESC LIMIT $limit OFFSET $off");
         }catch(Exception $e){
             error_log("Database(Admin) error  ::::". $e->getMessage());
             $_SESSION['info'] = "<div id='info'>An error occurred.</div>";

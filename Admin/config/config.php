@@ -34,6 +34,10 @@ define('_PASS_', getenv('DB_PASS'));
 
 
 
+//API Credentials
+define("_FLW_SECRET_KEY_", getenv('FLW_SECRET_KEY'));
+
+
 //Admin Credentials
 define('_ADMIN_', getenv('ADMIN_EMAIL'));
 define('_ADMIN_PHONE_', getenv('ADMIN_PHONE'));

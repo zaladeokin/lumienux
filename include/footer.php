@@ -55,6 +55,7 @@ if(_CURRENT_FILE_ == 'cart.php' || _CURRENT_FILE_ == 'checkout.php'){
 }
 if(_CURRENT_FILE_ == 'cart.php'){
     echo '<script src="js/cart.js"></script>';
+    echo '<script src="js/order.js"></script>';
 }
 ?>
 </body>

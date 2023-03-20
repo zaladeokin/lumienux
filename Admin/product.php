@@ -75,6 +75,7 @@ if($action == 'edit'){
   $p_name= isset($_SESSION['p_name']) ? repopulate('p_name') : htmlentities($data['name']);
   $p_price= isset($_SESSION['p_price']) ? repopulate('p_price') : htmlentities($data['price']);
   $p_qty= isset($_SESSION['p_qty']) ? repopulate('p_qty') : htmlentities($data['stock']);
+  $qty_sold= isset($_SESSION['qty_sold']) ? repopulate('qty_sold') : htmlentities($data['sold_product']);
   $p_cat= isset($_SESSION['p_cat']) ? repopulate('p_cat') : htmlentities($data['category']);
   $p_desc= isset($_SESSION['p_desc']) ? repopulate('p_desc') : htmlentities($data['description']);
   $display_img= $data['img'] != null ? _DOMAIN_."/img/product/$data[img]": null;
@@ -89,6 +90,7 @@ if($action == 'edit'){
     <label class="zl-form-info" <?= FormFlashMsg('name_err'); ?>>Product name&nbsp;<input type="text" name="product_name" value="<?= $p_name; ?>"></label>
     <label class="zl-form-info" <?= FormFlashMsg('price_err'); ?>>Price&nbsp;<input type="number" name="product_price" value="<?= $p_price; ?>"></label>
     <label class="zl-form-info" <?= FormFlashMsg('qty_err'); ?>>Quantity&nbsp;<input type="number" name="product_qty" value="<?= $p_qty; ?>"></label>
+    <label class="zl-form-info" <?= FormFlashMsg('qty_sold_err'); ?>>Quantity sold&nbsp;<input type="number" name="qty_sold" min="0" max="<?= $p_qty; ?>" value="<?= $qty_sold; ?>"></label>
     <label class="zl-form-info" <?= FormFlashMsg('cat_err'); ?>>Category&nbsp;
         <select name="category">
           <option value="0">Select product category</option>
@@ -237,6 +239,7 @@ if($action == 'delete'){
   <option value="4">Charge Controllers</option>
   <option value="5">Light</option>
   <option value="6">Accessories</option>
+  <option value="7">Out of stock</option>
 </select>
 <br><br>
 <input type="search" id="search" placeholder="Enter product name" ?>
