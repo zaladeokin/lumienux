@@ -23,7 +23,7 @@ if($cart !== false && count($cart) > 0){
             $stock_stat= ($stock_avail_qty > 1) ? $stock_avail_qty." stocks available" : $stock_avail_qty." stock available";
             $input_disable= "";
         }else{
-            $stock_stat= "Out of stock";
+            $stock_stat= "<span style='color: #ff0000;'>Out of stock</span>";
             $input_disable= "disabled= true";
         }
 

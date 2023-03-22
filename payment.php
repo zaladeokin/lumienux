@@ -45,7 +45,7 @@ if( isset($_POST['customer_email']) ){
         );
     
         $request=[
-            'tx_ref' => implode("-", $products_id)."-".time(),
+            'tx_ref' => bin2hex( random_bytes(4) )."-".time(),
             'amount' => $total,
             'currency' => 'NGN',
             'payment_options' => 'card',

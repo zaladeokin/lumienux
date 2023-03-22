@@ -228,6 +228,30 @@ main input[type="submit"]{
     color: #008000;
 }
 
+/*Order.php*/
+section#order_info{
+    position: absolute;
+    top: 10vh;
+    left: 5vw;
+    z-index: 100;
+    padding: 1vh 1vh 1.5vh;
+    min-height: 50vh;
+    width: 90vw;
+    background-color: var(--gr-bg);
+}
+section#order_hide{
+    display: none;
+}
+section#order_info li{
+    float: left;
+    margin-left: 5%;
+}
+section#order_info div{
+    clear: both;
+    margin-bottom: 1vh;
+}
+
+
 
 /*                  RWD                         */
 @media all and (min-width:692px){
@@ -271,6 +295,11 @@ main input[type="submit"]{
         display: inline-block;
         width: 48%;
     }
+    /*Order.php*/
+    section#order_info{
+        left: 10vw;
+        width: 80vw;
+    }
 
 }
 
@@ -308,6 +337,11 @@ main input[type="submit"]{
     #checkout figcaption{
         display: inline-block;
         width: 48%;
+    }
+    /*Order.php*/
+    section#order_info{
+        left: 20vw;
+        width: 60vw;
     }
 
 }

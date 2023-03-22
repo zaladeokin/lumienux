@@ -1,7 +1,7 @@
 function template(data){
     var available= data.stock - data.sold_product;
     if(available <= 0){
-        available= 'Out of stock';
+        available= "<span style='color: #ff0000;'>Out of stock</span>";
     }else if(available == 1){
         available= '1 stock available';
     }else{

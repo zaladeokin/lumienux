@@ -1,5 +1,5 @@
 function template(data){
-    return '<figure><a href="checkout.php?id='+data.id+'"><img src="img/product/'+data.img+'" alt="'+data.name+'"><figcaption>'+data.name+'</figcaption></a></figure>';
+    return '<figure><a href="checkout.php?id='+data.id+'"><img src="img/product/'+data.img+'" alt="'+data.name+'"><figcaption>'+data.name+'<br>price:&nbsp;&nbsp;&#8358;'+data.price+'</figcaption></a></figure>';
 
 }
 var initial_content= document.querySelector('main').innerHTML;

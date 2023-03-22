@@ -198,10 +198,15 @@ if($action == 'delete'){
     }
     $p_name= htmlentities($data['name']);
     $p_price= htmlentities($data['price']);
-    $p_qty= htmlentities($data['stock']);
     $p_cat= htmlentities($data['category']);
     $p_desc= htmlentities($data['description']);
     $display_img=  _DOMAIN_."/img/product/$data[img]"; 
+    $stock_avail_qty= intval($data['stock']) - intval($data['sold_product']);
+    if($stock_avail_qty > 0){
+        $stock_stat= ($stock_avail_qty > 1) ? $stock_avail_qty." stocks available" : $stock_avail_qty." stock available";
+    }else{
+        $stock_stat= "<span style='color: #ff0000;'>Out of stock</span>";
+    }
   
 ?>
 <section id="checkout">
@@ -212,7 +217,7 @@ if($action == 'delete'){
             <h2><?= $p_name; ?></h2>
             <div><strong>Description</strong><?= $p_desc; ?></div>
             <div><strong>Price</strong>&nbsp;:&nbsp;&#8358;<?= $p_price; ?></div>
-            <div><small>&nbsp;&nbsp;<?= $p_qty; ?> stocks available</small></div> 
+            <div><small>&nbsp;&nbsp;<?= $stock_stat; ?></small></div> 
             <form method="POST">
               <input type="hidden" name="product_id" value="<?= $data['id']; ?>">
               <input type="hidden" name="action" value="delete">
@@ -265,7 +270,10 @@ if(!$action){
         <li><a href="<?= _CURRENT_FILE_; ?>?action=upload">Upload Product</a></li>
     <ul>
   </section>
-  <?php } ?>
+  <?php 
+    include_once('config/stat.php');
+    }
+  ?>
   
 
 <?php   include_once('include/footer.php'); ?>

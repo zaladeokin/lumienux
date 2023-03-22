@@ -116,7 +116,6 @@ Class Product extends PDO{
     
     public function search($keyword, $category= false){
         $keyword= filter_var($keyword, FILTER_SANITIZE_STRING);
-        //$filter= ($category != false) ? "category= '$category' AND (name LIKE :keyword OR description LIKE :keyword)" : "name LIKE :keyword OR description LIKE :keyword";
         if($category !== false){
             if($category == "7"){//For Admin to edit product that is out of stock
                 $filter= "sold_product = stock AND (name LIKE :keyword OR description LIKE :keyword)";
@@ -242,9 +241,9 @@ Class Product extends PDO{
 
     public function load_product($limit= 30, $off= 0, $category= false, $advance_filter= false){
         if($advance_filter){
-            $category= ($category) ? "WHERE (category= '$category') AND ($advance_filter)" : "";
+            $category= ($category !== false) ? "WHERE (category= '$category') AND ($advance_filter)" : "WHERE $advance_filter";
         }else{
-            $category= ($category) ? "WHERE category= '$category'" : "";
+            $category= ($category !== false) ? "WHERE category= '$category'" : "";
         }
         try{
             $stmt= $this->query("SELECT id, name, img, price FROM product $category ORDER BY stock - sold_product DESC, id DESC LIMIT $limit OFFSET $off");
@@ -258,12 +257,12 @@ Class Product extends PDO{
 
     public function total_product($category= false, $advance_filter= false){
         if($advance_filter){
-            $category= ($category) ? "WHERE (category= '$category') AND ($advance_filter)" : "";
+            $filter= ($category !== false) ? "WHERE (category= '$category') AND ($advance_filter)" : "WHERE $advance_filter";
         }else{
-            $category= ($category) ? "WHERE category= '$category'" : "";
+            $filter= ($category !== false) ? "WHERE category= '$category'" : "";
         }
         try{
-            $stmt= $this->query("SELECT COUNT(*) FROM product $category");
+            $stmt= $this->query("SELECT COUNT(*) FROM product $filter");
             $num= $stmt->fetchColumn();
         }catch(Exception $e){
             error_log("Database(Admin) error  ::::". $e->getMessage());

@@ -3,6 +3,7 @@ session_start();
 require_once('config.php');
 require_once('Admin.php');
 require_once('Product.php');
+require_once('Order.php');
 
 
 if(!isset($_SESSION['Admin']) && _CURRENT_FILE_ != 'index.php' && _CURRENT_FILE_ != 'reset_password.php' && _CURRENT_FILE_ != 'dbsetup.php'){
@@ -19,6 +20,10 @@ Any cookie work goes here....
 //Instatiating Model class
 if( _CURRENT_FILE_ == 'index.php' || _CURRENT_FILE_ == 'reset_password.php' || _CURRENT_FILE_ == 'dbsetup.php' ){
     $admin= new Admin(_ADMIN_USER_, _ADMIN_PASS_);// Instatiate model class
-}elseif( _CURRENT_FILE_ == 'product.php' ){
+}
+if( _CURRENT_FILE_ == 'product.php' || _CURRENT_FILE_ == 'order.php' ){
     $product= new Product(_ADMIN_USER_, _ADMIN_PASS_);
+}
+if( _CURRENT_FILE_ == 'order.php' ){
+    $order= new Order(_ADMIN_USER_, _ADMIN_PASS_);
 }

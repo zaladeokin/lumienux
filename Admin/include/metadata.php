@@ -8,4 +8,5 @@
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/header.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/body.css">
 <link rel="stylesheet" href="<?= _DOMAIN_;?>/css/footer.css">
+<script type="text/javascript" src="<?= _DOMAIN_;?>/js/jquery.min.js"></script>
 <title>Lumienux|Admin</title>

@@ -26,14 +26,10 @@ Class Order extends PDO{
     public function approve($data, $product){
         try{
             $info= json_encode($data);
-            $add= $this->prepare("INSERT INTO orders(tx_ref, email, phone, address, product_id, product_qty, amount, payment_info) VALUES(:tx_ref, :email, :tel, :add, :id, :qty, :amount, :info)");
+            $add= $this->prepare("INSERT INTO orders(tx_ref, email, amount, payment_info) VALUES(:tx_ref, :email, :amount, :info)");
             $add->execute(array(
                 ':tx_ref' => $data->data->tx_ref,
                 ':email' => $data->data->customer->email,
-                ':tel' => $data->data->meta->phone_number,
-                ':add' => $data->data->meta->address,
-                ':id' => $data->data->meta->product_id,
-                ':qty' => $data->data->meta->qty,
                 ':amount' => $data->data->charged_amount,
                 ':info' => $info
             ));
@@ -64,4 +60,116 @@ Class Order extends PDO{
         }
     }
 
+    public function total_order($status= false, $advance_filter= false){
+        
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            return false;
+        }
+
+        if($advance_filter){
+            $filter= ($status !== false) ? "WHERE (status= '$status') AND ($advance_filter) AND (deleted= '0')" : "WHERE $advance_filter AND (deleted= '0')";
+        }else{
+            $filter= ($status !== false) ? "WHERE (status= '$status') AND (deleted= '0')" : "WHERE deleted= '0'";
+        }
+        try{
+            $stmt= $this->query("SELECT COUNT(*) FROM orders $filter");
+            $num= $stmt->fetchColumn();
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            $num= false;
+        }
+        return $num;
+    }
+
+    public function load_order($status= false, $advance_filter= false){
+        
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            $_SESSION['info'] = "<div id='info'>Access denied.</div>";
+            header("Location: "._DOMAIN_."/index.php");
+            return;
+        }
+
+        if($advance_filter){
+            $filter= ($status !== false) ? "WHERE (status= '$status') AND ($advance_filter) AND (deleted= '0')" : "WHERE $advance_filter AND (deleted= '0')";
+        }else{
+            $filter= ($status !== false) ? "WHERE (status= '$status') AND (deleted= '0')" : "WHERE deleted= '0'";
+        }
+        
+        try{
+            $stmt= $this->query("SELECT id, tx_ref, email, amount FROM orders $filter ORDER BY id DESC");
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            $_SESSION['info'] = "<div id='info'>An error occurred.</div>";
+            $stmt= false;
+        }
+        return $stmt;
+    }
+
+    public function get_order($id){
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            return false;
+        }
+
+        $exist= $this->if_exist($id);
+        if($exist == 0 && $exist ===false){
+            $order= false;
+            return;
+        }
+        
+        try{
+            $stmt= $this->prepare("SELECT payment_info, status FROM orders WHERE (id= :id)  AND (deleted= '0')");
+            $stmt->execute(array(
+                ':id' => $id));
+            $order= $stmt->fetch(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            $order= false;
+        }
+        return $order;
+    }
+
+    private function if_exist($id){
+        try{
+            $stmt= $this->prepare("SELECT COUNT(*) FROM orders WHERE (id= :id) AND (deleted= '0')");
+            $stmt->execute(array(
+                ':id' => $id));
+            $num= $stmt->fetchColumn();
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            $num= false;
+        }
+        return $num;
+    }
+
+    public function action($id, $action){
+        if(!isset($_SESSION['Admin'])){// Resrict access to Admin
+            return false;
+        }
+        if( $this->if_exist($id) == 0){
+            return false;
+        }
+        if($action =='complete'){
+            $sql= "UPDATE orders SET status= '1' WHERE id='$id'";
+            $msg= "<span style='color:#008000;'>Completed</span>";
+        }elseif($action == 'delete'){
+            $sql= "UPDATE orders SET deleted= '1' WHERE id='$id'";
+            $msg= "<span style='color:#ff0000;'>Deleted</span>";
+        }else{
+            $sql= false;
+            $msg= "<span style='color:#ff0000;'>Try again</span>";
+        }
+
+        try{
+            if($sql) {
+                $this->query($sql);
+
+                return json_encode(array('message'=> $msg));
+            }else{
+                return false;
+            }
+        }catch(Exception $e){
+            error_log("Database(Admin) error  ::::". $e->getMessage());
+            return false;
+        }
+    }
 }
