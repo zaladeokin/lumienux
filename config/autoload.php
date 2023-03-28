@@ -4,6 +4,7 @@ require_once('Admin/config/config.php');
 require_once('Admin/config/Product.php');
 require_once('Admin/config/Suscriber.php');
 require_once('Admin/config/Order.php');
+require_once('Admin/config/DeliveryFee.php');
 
 
 /*
@@ -23,6 +24,7 @@ $product= new Product(_USER_, _PASS_);
 
 if(_CURRENT_FILE_ =='payment.php' || _CURRENT_FILE_ =='processed.php'){
     $order= new Order(_USER_, _PASS_);
+    $deliveryFee= new DeliveryFee(_USER_, _PASS_);
 }
 
 //pagination API

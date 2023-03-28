@@ -61,7 +61,7 @@ include_once('include/header.php');
 if($action == 'edit'){
   if(isset($_GET['id'])){
     $data= $product->get_product($_GET['id']);
-    $exist= $product->if_exist($data['name']);
+    $exist= ($data !== false) ? $product->if_exist($data['name']) : false;
     if($exist == 0 || $exist == false){
       $_SESSION['info'] = "<div id='info'>Invalid action.</div>";
       header('Location: product.php');
@@ -77,10 +77,15 @@ if($action == 'edit'){
   $p_qty= isset($_SESSION['p_qty']) ? repopulate('p_qty') : htmlentities($data['stock']);
   $qty_sold= isset($_SESSION['qty_sold']) ? repopulate('qty_sold') : htmlentities($data['sold_product']);
   $p_cat= isset($_SESSION['p_cat']) ? repopulate('p_cat') : htmlentities($data['category']);
+  $p_dc= isset($_SESSION['p_dc']) ? repopulate('p_dc') : htmlentities($data['delivery_class']);
   $p_desc= isset($_SESSION['p_desc']) ? repopulate('p_desc') : htmlentities($data['description']);
   $display_img= $data['img'] != null ? _DOMAIN_."/img/product/$data[img]": null;
   function cat($id, $p_cat){
     $select= ($id == $p_cat) ? 'selected' : '';
+    return $select;
+  }
+  function dc($id, $p_dc){
+    $select= ($id == $p_dc) ? 'selected' : '';
     return $select;
   }
 ?>
@@ -101,6 +106,14 @@ if($action == 'edit'){
             <option value="5" <?= cat('5', $p_cat); ?>>Light</option>
             <option value="6" <?= cat('6', $p_cat); ?>>Accessories</option>
         </select>
+    </label>
+    <label class="zl-form-info" <?= FormFlashMsg('delivery_err'); ?>>Delivery Class&nbsp;
+        <select name="delivery">
+        <option value="0">Select Delivery Class</option>
+            <option value="1" <?= dc('1', $p_dc); ?>> Light weighted</option>
+            <option value="2" <?= dc('2', $p_dc); ?>>Medium weighted</option>
+            <option value="3" <?= dc('3', $p_dc); ?>>High weighted</option>
+        </select><br><i>(Delivery class determine cost of delivery)</i>
     </label>
     <label class="zl-form-info" <?= FormFlashMsg('desc_err'); ?>>Product description<br><textarea name="product_desc" placeholder="Brief description of product here"><?= $p_desc; ?></textarea></label>
     <label class="zl-form-info" id="img_field" <?= FormFlashMsg('img_err'); ?>>Display picture&nbsp;
@@ -141,20 +154,25 @@ if($display_img){
 <?php
 //Upload product
 if($action == 'upload'){ 
-//repopulate form
-$p_name= repopulate('p_name');
-$p_price= repopulate('p_price');
-$p_qty= repopulate('p_qty');
-$p_cat= repopulate('p_cat');
-$p_desc= repopulate('p_desc');
-function cat($id, $p_cat){
-  $select= ($id == $p_cat) ? 'selected' : '';
-  return $select;
-}
+  //repopulate form
+  $p_name= repopulate('p_name');
+  $p_price= repopulate('p_price');
+  $p_qty= repopulate('p_qty');
+  $p_cat= repopulate('p_cat');
+  $p_dc= repopulate('p_dc');
+  $p_desc= repopulate('p_desc');
+  function cat($id, $p_cat){
+    $select= ($id == $p_cat) ? 'selected' : '';
+    return $select;
+  }
+  function dc($id, $p_dc){
+    $select= ($id == $p_dc) ? 'selected' : '';
+    return $select;
+  }
 
 
 ?>
-<section>
+  <section>
   <h1>Upload Products</h1>
   <form method="POST" enctype="multipart/form-data">
     <label class="zl-form-info" <?= FormFlashMsg('name_err'); ?>>Product name&nbsp;<input type="text" name="product_name" value="<?= $p_name; ?>"></label>
@@ -170,6 +188,14 @@ function cat($id, $p_cat){
             <option value="5" <?= cat('5', $p_cat); ?>>Light</option>
             <option value="6" <?= cat('6', $p_cat); ?>>Accessories</option>
         </select>
+    </label>
+    <label class="zl-form-info" <?= FormFlashMsg('delivery_err'); ?>>Delivery Class&nbsp;
+        <select name="delivery">
+          <option value="0">Select Delivery Class</option>
+            <option value="1" <?= dc('1', $p_dc); ?>> Light weighted</option>
+            <option value="2" <?= dc('2', $p_dc); ?>>Medium weighted</option>
+            <option value="3" <?= dc('3', $p_dc); ?>>High weighted</option>
+        </select><br><i>(Delivery class determine cost of delivery)</i>
     </label>
     <label class="zl-form-info" <?= FormFlashMsg('desc_err'); ?>>Product description<br><textarea name="product_desc" placeholder="Brief description of product here"><?= $p_desc; ?></textarea></label>
     <label class="zl-form-info" <?= FormFlashMsg('img_err'); ?>>Display picture&nbsp;<input type="file" accept="image/*" id= "image" name="product_img"><div id="preview"></div></label>
@@ -233,24 +259,24 @@ if($action == 'delete'){
   //Product Management
   if($action == 'product_mgt'){ ?>
    <section>
-  <h1>Products</h1>
-  <fieldset>
-<legend> Search for product</legend>
-<select id="category">
-  <option value="0">Select product category</option>
-  <option value="1"> Batteries</option>
-  <option value="2">Inverters</option>
-  <option value="3">Solar Panels</option>
-  <option value="4">Charge Controllers</option>
-  <option value="5">Light</option>
-  <option value="6">Accessories</option>
-  <option value="7">Out of stock</option>
-</select>
-<br><br>
-<input type="search" id="search" placeholder="Enter product name" ?>
-  </fieldset><br>
-  <img id="spinner" src="../img/gif/spinner.gif" alt="Loading" height="25" style="vertical-align: middle; display:none;">
-  <br>
+    <h1>Products</h1>
+    <fieldset>
+      <legend> Search for product</legend>
+      <select id="category">
+        <option value="0">Select product category</option>
+        <option value="1"> Batteries</option>
+        <option value="2">Inverters</option>
+        <option value="3">Solar Panels</option>
+        <option value="4">Charge Controllers</option>
+        <option value="5">Light</option>
+        <option value="6">Accessories</option>
+        <option value="7">Out of stock</option>
+      </select>
+      <br><br>
+      <input type="search" id="search" placeholder="Enter product name" ?>
+    </fieldset><br>
+    <img id="spinner" src="../img/gif/spinner.gif" alt="Loading" height="25" style="vertical-align: middle; display:none;">
+    <br>
   <div id="search_outcome"></div><br>
   </section>
 

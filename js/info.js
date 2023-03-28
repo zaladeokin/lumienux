@@ -33,6 +33,7 @@ function action(){
 
 //Attach events here
 $(document).ready(function(){
+    $.ajaxSetup({cache: false});
     var action_btn= document.getElementsByClassName('view_order');
     for(i=0; i < action_btn.length; i++){
         action_btn[i].addEventListener("click", function(){

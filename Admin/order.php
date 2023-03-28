@@ -25,6 +25,8 @@ function view_temp($id, $order, $product){
     //order Info
     $product_id= json_decode($get_order->data->meta->product_id);
     $qty= json_decode($get_order->data->meta->qty);
+    $delivery_fee= $get_order->data->meta->delivery_fee;
+    $state= json_decode($get_order->data->meta->state_info)->state;
     //Customer info
     $name= $get_order->data->customer->name;
     $phone= $get_order->data->meta->phone_number;
@@ -40,6 +42,7 @@ function view_temp($id, $order, $product){
             <li>Phone: $phone</li>
             <li>Email: $email</li>
             <li>Address: $address</li>
+            <li>State: $state</li>
         </ul>
         <div class="table-responsive-sm">
             <table class="table table-sm table-striped caption-top text-center">
@@ -61,6 +64,7 @@ function view_temp($id, $order, $product){
     echo <<<_view
                 </tbody>
                 <tfoot>
+                    <tr><td colspan="4">Delivery fee</td><td>$delivery_fee</td></tr>
                     <tr><td colspan="4">Total</td><td>$amount</td></tr>
                     <tr><td colspan="5">Card Details - $card_num ($card_exp) ($card_type)</td></tr>
                 </tfoot>
@@ -111,7 +115,7 @@ include_once('include/header.php');
 <section id="order_hide"></section>
 
 <?php
-//Pending Orders
+//Pending & Completed Orders
 if($action == 'pending' || $action == 'completed'){
     $order_status= ($action == 'pending') ? 'Pending' : 'Completed';
     $total_order= ($action == 'pending') ? $order->total_order('0') : $order->total_order('1');

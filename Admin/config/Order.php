@@ -8,7 +8,7 @@ Class Order extends PDO{
 
     public function validate($data){
         //Repopulate form
-        $_SESSION['customer_name']= $data['customer_name']; $_SESSION['customer_email']= $data['customer_email']; $_SESSION['customer_phone']= $data['customer_phone']; $_SESSION['customer_addr']= $data['customer_addr'];
+        $_SESSION['customer_name']= $data['customer_name']; $_SESSION['customer_email']= $data['customer_email']; $_SESSION['customer_phone']= $data['customer_phone']; $_SESSION['customer_addr']= $data['customer_addr']; $_SESSION['state']= $data['state'];
         if( $data['customer_name']=="" || $data['customer_email']=="" || $data['customer_phone']=="" || $data['customer_addr']==""){
             $_SESSION['info'] = "<div id='info'>All field are required.</div>";
             return false;
@@ -17,6 +17,9 @@ Class Order extends PDO{
             return false;
         }elseif(!(preg_match("/[0-9]{10,13}/", intval($data['customer_phone'])))){
             $_SESSION['info'] = "<div id='info'>Enter a valid phone number</div>";
+            return false;
+        }elseif($data['state']== "0"){
+            $_SESSION['info'] = "<div id='info'>State is required.</div>";
             return false;
         }else{
             return true;

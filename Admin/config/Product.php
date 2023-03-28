@@ -23,6 +23,7 @@ Class Product extends PDO{
     private function validate($data){
         //Get product Data from DataBase to validate Quantity sold
         if(isset($data['qty_sold'])){
+            $_SESSION['qty_sold']= $data['qty_sold'];//repopulate form
             $item= $this->get_product($data['product_id']);
             $item_qty= $item['stock'];
             if($data['qty_sold'] > $item_qty){
@@ -39,7 +40,7 @@ Class Product extends PDO{
         }
 
         //Repopulate form
-        $_SESSION['p_name']= $data['product_name']; $_SESSION['p_desc']= $data['product_desc']; $_SESSION['p_price']= $data['product_price']; $_SESSION['qty_sold']= $data['qty_sold']; $_SESSION['p_qty']= $data['product_qty']; $_SESSION['p_cat']= $data['category'];
+        $_SESSION['p_name']= $data['product_name']; $_SESSION['p_desc']= $data['product_desc']; $_SESSION['p_price']= $data['product_price']; $_SESSION['p_qty']= $data['product_qty']; $_SESSION['p_cat']= $data['category']; $_SESSION['p_dc']= $data['delivery'];
         if( $data['product_name']=="" /* || strlen($data['product_name] > 25) */ ){
             $_SESSION['name_err'] = "Product name too long or short.";
             return false;
@@ -53,6 +54,9 @@ Class Product extends PDO{
             return false;
         }elseif( $data['category'] == 0 ){
             $_SESSION['cat_err'] = "Select a category for your product.";
+            return false;
+        }elseif( $data['delivery'] == 0 ){
+            $_SESSION['delivery_err'] = "Select Delivery class.";
             return false;
         }elseif( $_FILES['product_img']['size'] > 1000000 ){ //Ensure file is not above 1MB
             $_SESSION['img_err'] = "Image must not exceed 1mb.";
@@ -86,14 +90,15 @@ Class Product extends PDO{
         if($valid){
             if( $this->if_exist($data['product_name']) == 0){
                 try{
-                    $upload= $this->prepare("INSERT INTO product(name, description, price, stock, category, img) VALUES(:name, :desc, :price, :qty, :cat, :img)");
+                    $upload= $this->prepare("INSERT INTO product(name, description, price, stock, category, img, delivery_class) VALUES(:name, :desc, :price, :qty, :cat, :img, :dc)");
                     $upload->execute(array(
                         ':name' => $data['product_name'],
                         ':desc' => $data['product_desc'],
                         ':price' => $data['product_price'],
                         ':qty' => $data['product_qty'],
                         ':cat' => $data['category'],
-                        ':img' => $_FILES['product_img']['name']
+                        ':img' => $_FILES['product_img']['name'],
+                        ':dc' => $data['delivery']
                     ));
                     move_uploaded_file($_FILES['product_img']['tmp_name'], _ROOT_."/img/product/".$_FILES['product_img']['name']);
                     unset($_SESSION['p_name']); unset($_SESSION['p_desc']); unset($_SESSION['p_price']); unset($_SESSION['p_qty']); unset($_SESSION['p_cat']);
@@ -182,7 +187,7 @@ Class Product extends PDO{
 
                 //Update product information
                 try{
-                    $update= $this->prepare("UPDATE product SET name= :name, description= :desc, price= :price, stock= :qty, category= :cat, img= :img, sold_product= :qty_sold WHERE id='$product_id'");
+                    $update= $this->prepare("UPDATE product SET name= :name, description= :desc, price= :price, stock= :qty, category= :cat, img= :img, sold_product= :qty_sold, delivery_class= :dc WHERE id='$product_id'");
                     $update->execute(array(
                         ':name' => $data['product_name'],
                         ':desc' => $data['product_desc'],
@@ -190,7 +195,8 @@ Class Product extends PDO{
                         ':qty' => $data['product_qty'],
                         ':cat' => $data['category'],
                         ':img' => $_FILES['product_img']['name'],
-                        'qty_sold' => $data['qty_sold']
+                        'qty_sold' => $data['qty_sold'],
+                        ':dc' => $data['delivery']
                     ));
                     if(!$noFile){//Save image if new one is uploaded
                         move_uploaded_file($_FILES['product_img']['tmp_name'], _ROOT_."/img/product/".$_FILES['product_img']['name']);

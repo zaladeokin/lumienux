@@ -1,6 +1,15 @@
 <?php
 require_once('config/autoload.php');
 
+
+//JS API for estimating Delivery Fee
+if(isset($_POST['action']) && $_POST['action'] == 'evaluate'){
+    header('Content-Type: application/json; charset=utf-8');
+    $est= $deliveryFee->calculate_charges(explode(",", $_POST['id']), explode(",", $_POST['qty']), $_POST['state'], $product);
+    echo $est;
+    return;
+}
+
 function availableQty($id, $qty, $db){
     $products_id= $id;// use json_decode in if( isset($_POST['customer_email']) )
     $products_qty= $qty;// use json_decode in if( isset($_POST['customer_email']) )
@@ -16,15 +25,14 @@ function availableQty($id, $qty, $db){
     }
 }
 
-/**
- * Note: state input field has not been included in validation, repopulation and Fluuter 'meta' key
- */
 
 if( isset($_POST['customer_email']) ){
-    $total= $_SESSION['total'];
     $desc= $_SESSION['order_desc'];
     $products_id= $_SESSION['products_id'];
     $products_qty= $_SESSION['products_qty'];
+    //Calculate delivery fee
+    $del_fee= $deliveryFee->calculate_charges($_SESSION['products_id'], $_SESSION['products_qty'], $_POST['state'], $product);
+    $total= intval($_SESSION['total']) + $del_fee;
     $valid= $order->validate($_POST);//Validate customer credientials for payment
     if($valid){
         $customer= array(
@@ -36,6 +44,8 @@ if( isset($_POST['customer_email']) ){
             'product_id'=> json_encode($products_id),
             'qty'=> json_encode($products_qty),
             'address'=> $_POST['customer_addr'],
+            'delivery_fee' => $del_fee,
+            'state_info' => json_encode($deliveryFee->get_state($_POST['state'])),
             'phone_number'=> $_POST['customer_phone']
         );
         $customization= array(
@@ -98,11 +108,21 @@ if( isset($_POST['customer_email']) ){
 if(isset($_SESSION['products_id'])){
 include_once('include/header.php');
 
+//Load available state..
+$states= json_decode($deliveryFee->load_state());
+
 //repopulate form for newsletter field
 $name= repopulate('customer_name');
 $email= repopulate('customer_email');
 $phone= repopulate('customer_phone');
 $addr= repopulate('customer_addr');
+$state_id= repopulate('state');
+
+function sst($id, $st){
+    $st= ($st == "") ? '0' : $st;
+    $select= ($id == $st) ? 'selected' : '';
+    return $select;
+  }
 
 $total= $_SESSION['total'];
 ?>
@@ -121,14 +141,24 @@ $total= $_SESSION['total'];
     <label>Email&nbsp;:&nbsp;<input type="email" name="customer_email" value="<?= $email; ?>"></label>
     <label>Phone&nbsp;:&nbsp;<input type="tel" name="customer_phone" placeholder="0xxxxxxxxxx" value="<?= $phone; ?>"></label>
     <label>Address&nbsp;:&nbsp;<input type="text" name="customer_addr" value="<?= $addr; ?>"></label>
-    <label>State &nbsp;&nbsp;<select name="state"></select></label>
-    <strong>Delivery fee</strong>&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<br>
-    <strong>Total amount&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<?= $total; ?></strong><br>
+    <label>State: &nbsp;&nbsp;<select name="state" id="state">
+        <option value="0" <?= sst('0', $state_id) ?>>Select state</option>
+        <?php 
+        foreach($states as $state){
+            echo "<option value='$state->id' ".sst($state->id, $state_id).">$state->state</option>";
+        }
+        ?>
+    </select></label>
+    <strong>Amount</strong>&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<span id="cost"><?= $total; ?></span><br>
+    <strong>Delivery fee</strong>&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<span id="delivery_fee">0</span><br>
+    <strong>Total</strong>&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<span id="tot_charges"><?= $total; ?></span><br>
+    <input type="hidden" id="products_id" value="<?= implode(",", $_SESSION['products_id']); ?>"><input type="hidden" id="products_qty" value="<?= implode(",", $_SESSION['products_qty']); ?>">
     <input type="submit" value="Make payment">
     </fieldset>
 </form>
 <br>
 </section>
+<script src="js/cal_del.js"></script>
 <?php
 include_once('include/footer.php');
 }

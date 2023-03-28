@@ -4,6 +4,7 @@ require_once('config.php');
 require_once('Admin.php');
 require_once('Product.php');
 require_once('Order.php');
+require_once('DeliveryFee.php');
 
 
 if(!isset($_SESSION['Admin']) && _CURRENT_FILE_ != 'index.php' && _CURRENT_FILE_ != 'reset_password.php' && _CURRENT_FILE_ != 'dbsetup.php'){
@@ -26,4 +27,7 @@ if( _CURRENT_FILE_ == 'product.php' || _CURRENT_FILE_ == 'order.php' ){
 }
 if( _CURRENT_FILE_ == 'order.php' ){
     $order= new Order(_ADMIN_USER_, _ADMIN_PASS_);
+}
+if( _CURRENT_FILE_ == 'deliveryfee.php' ){
+    $deliveryFee= new DeliveryFee(_ADMIN_USER_, _ADMIN_PASS_);
 }

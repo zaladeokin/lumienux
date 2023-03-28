@@ -17,6 +17,7 @@ include_once('include/header.php');
   <ul>
     <li><a href="product.php">Manage Product</a></li>
     <li><a href="order.php">Orders</a></li>
+    <li><a href="deliveryfee.php">Delivery Charges</a></li>
     <li><a href="#">Newsletter Suscriber</a></li>
   </ul>
   </section>
