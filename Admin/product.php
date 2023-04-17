@@ -32,7 +32,7 @@ if(isset($_POST['action'])){
 //Post Action here
 
 if($p_action == "upload"){//Product Upload
-  $product->upload($_POST); 
+  $product->upload($_POST, $suscriber); 
   return;
 }elseif($p_action == 'edit'){//Edit Product
   $product->edit_product($_POST);

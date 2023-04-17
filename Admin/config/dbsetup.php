@@ -9,3 +9,4 @@ createTable('product','id INTEGER NOT NULL AUTO_INCREMENT, name varchar(255) NOT
 createTable('orders','id INTEGER NOT NULL AUTO_INCREMENT, tx_ref varchar(255) NOT NULL, email varchar(255) NOT NULL, amount INTEGER NOT NULL, status ENUM("0", "1") DEFAULT "0", payment_info LONGTEXT, deleted ENUM("0", "1") DEFAULT "0",  PRIMARY KEY(id)', $admin);
 createTable('delivery_fee','id INTEGER NOT NULL AUTO_INCREMENT, state varchar(255) NOT NULL UNIQUE, light INTEGER NOT NULL, medium INTEGER NOT NULL, high INTEGER NOT NULL,  PRIMARY KEY(id)', $admin);
 createTable('suscriber','id INTEGER NOT NULL AUTO_INCREMENT, email varchar(255) NOT NULL UNIQUE, name varchar(255) NOT NULL, PRIMARY KEY(id)', $admin);
+createTable('config','id INTEGER NOT NULL AUTO_INCREMENT, config_key varchar(255) NOT NULL UNIQUE, config_value INTEGER NOT NULL, PRIMARY KEY(id)', $admin);

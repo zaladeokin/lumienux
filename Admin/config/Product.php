@@ -80,7 +80,7 @@ Class Product extends PDO{
         }
     }
 
-    public function upload($data){
+    public function upload($data, $suscriber){
         if(!isset($_SESSION['Admin'])){// Resrict access to Admin
             $_SESSION['info'] = "<div id='info'>Access denied.</div>";
             header("Location: "._DOMAIN_."/index.php");
@@ -102,6 +102,9 @@ Class Product extends PDO{
                     ));
                     move_uploaded_file($_FILES['product_img']['tmp_name'], _ROOT_."/img/product/".$_FILES['product_img']['name']);
                     unset($_SESSION['p_name']); unset($_SESSION['p_desc']); unset($_SESSION['p_price']); unset($_SESSION['p_qty']); unset($_SESSION['p_cat']);
+
+                    $suscriber->send_upload_mail($data, $this->lastInsertId());//Send mail to suscriber
+
                     $_SESSION['info'] = "<div id='info'>Product uploaded successfully.</div>";
                     header("Location: product.php?action=upload");
                 }catch(Exception $e){
@@ -160,7 +163,7 @@ Class Product extends PDO{
         return $product;
     }
 
-    public function edit_product($data){
+    public function edit_product($data, $suscriber){
         if(!isset($_SESSION['Admin'])){// Resrict access to Admin
             $_SESSION['info'] = "<div id='info'>Access denied.</div>";
             header("Location: "._DOMAIN_."/index.php");
@@ -204,6 +207,9 @@ Class Product extends PDO{
                         unlink(_ROOT_."/img/product/$product[img]");
                     }
                     unset($_SESSION['p_name']); unset($_SESSION['qty_sold']); unset($_SESSION['p_desc']); unset($_SESSION['p_price']); unset($_SESSION['p_qty']); unset($_SESSION['p_cat']);
+
+                    $suscriber->send_edit_mail($data);//Send mail to suscriber
+
                     $_SESSION['info'] = "<div id='info'>Product edited successfully.</div>";
                     header("Location: product.php?action=edit&id=$product_id");
                 }catch(Exception $e){

@@ -1,6 +1,35 @@
 <?php
 require_once('config/autoload.php');
 
+function summary($order){
+    $id = isset($_GET['tx_ref']) ? $_GET['tx_ref'] : false;
+
+    if($id === false) return;
+
+    $content= <<<_item
+                <section class="product">
+                    <h2 style="color:#008000;">Order Completed</h2>
+                    <div><strong>Transaction ID:</strong> $id</div>
+                    <p>You will recieve your order within 5 working days.</p>
+                    <p>You order the following: </p>
+                    <ul>
+            _item;
+
+    foreach($order as $i){
+        $content .= "<li>$i</li>";
+    }
+
+    $domain= _DOMAIN_;
+    $content .= <<<_item
+                        </ul>
+                        <p>Thanks for your patronage.</p>
+                        <p> <strong>You might need our engineer for installing your new product</strong>, <a href="$domain/service.php">click here to hire an engineer</a></p>
+                        <a href="$domain/product.php"><button>View more product</button></a><br><br>
+                    </section>
+                _item;
+    return $content;
+}
+
 $success= false;
 
 if(isset($_GET['status']) && isset($_SESSION['products_id'])){//$_SESSION['products_id'] help to prevent repeated action whenpage is reloaded because session would have been destroy on successful action.
@@ -24,10 +53,10 @@ if(isset($_GET['status']) && isset($_SESSION['products_id'])){//$_SESSION['produ
             }
 
             if($amt_paid >= $expected_amount && $response->data->currency == 'NGN'){
-                //Input into Database
-                $order->approve($response, $product);
                 //use $_SESSION['order_desc'] to send mail()
                 $item= explode(", ", $_SESSION['order_desc']);
+                //Input into Database
+                $order->approve($response, $product, summary($item));
                 //unset session
                 session_destroy();
                 //clear cart cookie
@@ -63,23 +92,7 @@ if(isset($_GET['status']) && isset($_SESSION['products_id'])){//$_SESSION['produ
 //View
 if($success){
     include_once('include/header.php');
-?>
-<section class="product">
-    <h2 style="color:#008000;">Order Completed</h2>
-    <p>You will recieve your order within 5 working days.</p>
-    <p>You order the following: </p>
-    <ul>
-    <?php 
-    foreach($item as $i){
-        echo "<li>$i</li>";
-    }
-    ?>
-    </ul>
-    <p>Thanks for your patronage.</p>
-    <p> <strong>You might need our engineer for installing your new product</strong>, <a href="service.php">click here to hire an engineer</a></p>
-    <a href="product.php"><button>View more product</button></a><br><br>
-</section>
-<?php
-include_once('include/footer.php');
+    summary($item);
+    include_once('include/footer.php');
 }
 ?>

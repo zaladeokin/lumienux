@@ -26,7 +26,7 @@ Class Order extends PDO{
         }
     }
 
-    public function approve($data, $product){
+    public function approve($data, $product, $mail_content){
         try{
             $info= json_encode($data);
             $add= $this->prepare("INSERT INTO orders(tx_ref, email, amount, payment_info) VALUES(:tx_ref, :email, :amount, :info)");
@@ -38,6 +38,9 @@ Class Order extends PDO{
             ));
             //Update sold_product in product
             $this->update_stock(json_decode($data->data->meta->product_id), json_decode($data->data->meta->qty), $product);
+            //Send mail
+            include_once("email.php");
+            send_mail($data->data->customer->email,"Order Completed (Lumienux Solar)", $mail_content);
         }catch(Exception $e){
             error_log("Database(Admin) error  ::::". $e->getMessage());
             $_SESSION['info'] = "<div id='info'>An error occurred.</div>";

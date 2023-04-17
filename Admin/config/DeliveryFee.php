@@ -65,7 +65,7 @@ Class DeliveryFee extends PDO{
 
     public function add_state($data){
 
-        if(!isset($_SESSION['Admin']))return false; // Resrict access to Admin
+        if(!isset($_SESSION['Admin'])) return false; // Resrict access to Admin
 
         if(!$this->validate($data)) return false;
 
