@@ -1,19 +1,21 @@
 <?php
 /**
  * Must be the first file to load in autoload.php
+ * 
+ * 
+ *$FOLDER_LEVEL This specify the name of subfolder where project is placed,
+ *Path name should begin with "/" e.g. $FOLDER_LEVEL=/lumienux
+ *$FOLDER_LEVEL should be left empty if project is not in subfolder i.e $FOLDER_LEVEL=""
  */
+$FOLDER_LEVEL="/lumienux";
 
 
 //Path setting
-define('_DOMAIN_', $_SERVER['REQUEST_SCHEME']."://".$_SERVER['SERVER_NAME'].'/lumienux');//Domain e.g. http://localhost, http://abc.com
-//Remove '/lumienux' for live production.
-//define('_DOMAIN_', $_SERVER['REQUEST_SCHEME']."://".$_SERVER['SERVER_NAME']);
+define('_DOMAIN_', $_SERVER['REQUEST_SCHEME']."://".$_SERVER['SERVER_NAME'].$FOLDER_LEVEL);//Domain e.g. http://localhost, http://abc.com
 
 define( '_RQT_URL_', $_SERVER['REQUEST_URI']); //reuest url path excluding domain name and HTTP protocol img/brand/ || can include file name if added in browser search box
 
-define( '_ROOT_', $_SERVER['DOCUMENT_ROOT'].'/lumienux');// Root path e.g. C:/xampp/htdocs
-//Remove '/lumienux' for live production.
-//define( '_ROOT_', $_SERVER['DOCUMENT_ROOT']);
+define( '_ROOT_', $_SERVER['DOCUMENT_ROOT'].$FOLDER_LEVEL);// Root path e.g. C:/xampp/htdocs
 
 //$_SERVER['SCRIPT_NAME'].;//request file name with path img/brand/photo.jpg
 define('_CURRENT_FILE_', basename($_SERVER['SCRIPT_NAME'])); //basename() extract file name from path as provided by $_SERVER['SCRIPT_NAME']
