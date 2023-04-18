@@ -37,9 +37,9 @@ if($token != false){
     }
 }
 
-if($score !== false && $score < 0.8) $_SESSION['info'] = "<div id='info'>Human verification failed, Try again.</div>";
+if($score !== false && $score <= 0.8) $_SESSION['info'] = "<div id='info'>Human verification failed, Try again.</div>";
 
-if( isset($_POST['customer_email']) && $score >= 0.8){
+if( isset($_POST['customer_email']) && $score > 0.8){
     $desc= $_SESSION['order_desc'];
     $products_id= $_SESSION['products_id'];
     $products_qty= $_SESSION['products_qty'];
