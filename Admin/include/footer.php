@@ -30,3 +30,33 @@
 <script src="<?= _DOMAIN_;?>/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<?php if(_CURRENT_FILE_== 'index.php'){ ?>
+ <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+    async defer></script>
+  <script type="text/javascript">
+     var Submit= false;//to make reCaptcha required.
+
+    var Verify= function(response){
+        if(response == grecaptcha.getResponse()){
+            Submit= true;
+        }
+    }
+
+  var onloadCallback = function() {
+    grecaptcha.render('reV2', {
+        'sitekey': '<?= _V2_SITE_KEY_; ?>',
+        'callback': Verify,
+        'theme': 'dark',
+    });
+  }
+  document.getElementById('auth').addEventListener("submit", function(event){//Make reCaptcha required
+    if(Submit){
+        document.getElementsByTagName('iframe')[0].removeAttribute("style");
+    }else{
+        event.preventDefault();
+        document.getElementsByTagName('iframe')[0].style.border= "1px solid red";
+    }
+  });
+  </script>
+<?php } ?>

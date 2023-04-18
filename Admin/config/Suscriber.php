@@ -199,6 +199,14 @@ Class Suscriber extends PDO{
                     ));
                     unset($_SESSION['scb_email']); unset($_SESSION['scb_name']);
                     $_SESSION['info'] = "<div id='info'>Thanks for suscribing to our newsletter.</div>";
+                    //use mail() to send Notification for successful registration..
+                    include_once("email.php");
+                    $body= <<<_auth
+                                <strong>Hi $data[scb_name],</strong><br>
+                                <p> Your subscription to our newsletter was successful, We'll keep you updated on our products.</p><br>
+                                <cite>Thanks.</cite>
+                            _auth;
+                    send_mail($data['scb_email'],"Subscription", $body);
                     header("Location: "._RQT_URL_);
                     return;
                 }catch(Exception $e){

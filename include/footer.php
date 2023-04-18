@@ -58,5 +58,23 @@ if(_CURRENT_FILE_ == 'cart.php'){
     echo '<script src="js/order.js"></script>';
 }
 ?>
+
+<?php
+if(_CURRENT_FILE_ == "payment.php"){ 
+?>
+
+<script>
+    var disable= document.getElementById("submit");
+    disable.disabled= true;
+    grecaptcha.ready(function() {
+      grecaptcha.execute('<?= _V3_SITE_KEY_; ?>', {action: 'payment'}).then(function(token) {
+          document.getElementById("v-token").value= token;
+          disable.disabled= false;
+      });
+    });
+</script>
+
+<?php } ?>
+
 </body>
 </html>

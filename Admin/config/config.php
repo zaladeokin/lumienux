@@ -36,8 +36,27 @@ define('_PASS_', getenv('DB_PASS'));
 
 
 
-//API Credentials
+//Email setup
+define("_MAIL_HOST_", getenv('MAIL_HOST'));
+define('_MAIL_USER_', getenv('MAIL_USER'));
+define('_MAIL_PASS_', getenv('MAIL_PASS'));
+define('_MAIL_PORT_', getenv('MAIL_PORT'));
+define('_MAIL_REPLY_', getenv('MAIL_REPLY'));
+define('_MAIL_REPLY_NAME_', getenv('MAIL_REPLY_NAME'));
+
+
+//Payment Gateway API KEY
 define("_FLW_SECRET_KEY_", getenv('FLW_SECRET_KEY'));
+
+
+//Recaptcha V2 API keys
+define("_V2_SECRET_KEY_", getenv('V2_SECRET_KEY'));
+define("_V2_SITE_KEY_", getenv('V2_SITE_KEY'));
+
+
+//Recaptcha V3 API keys
+define("_V3_SECRET_KEY_", getenv('V3_SECRET_KEY'));
+define("_V3_SITE_KEY_", getenv('V3_SITE_KEY'));
 
 
 //Admin Credentials

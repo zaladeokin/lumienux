@@ -9,4 +9,5 @@
 <link rel="stylesheet" href="css/body.css">
 <link rel="stylesheet" href="css/footer.css">
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<?php if(_CURRENT_FILE_ == "payment.php"){ ?> <script src="https://www.google.com/recaptcha/api.js?render=<?= _V3_SITE_KEY_; ?>"></script> <?php } ?>
 <title>Lumienux</title>

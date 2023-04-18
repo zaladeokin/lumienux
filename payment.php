@@ -25,8 +25,21 @@ function availableQty($id, $qty, $db){
     }
 }
 
+//Get reCaptcha response
+$token= isset($_POST['v-token']) ? $_POST['v-token'] : false;
+$score=false;
+//verify reCaptcha response
+if($token != false){
+    $reCaptcha= reCaptchaVerify(_V3_SECRET_KEY_, $token);
+    $reCapVal= $reCaptcha->success;
+    if($reCapVal){
+        $score= $reCaptcha->score;
+    }
+}
 
-if( isset($_POST['customer_email']) ){
+if($score !== false && $score < 0.8) $_SESSION['info'] = "<div id='info'>Human verification failed, Try again.</div>";
+
+if( isset($_POST['customer_email']) && $score >= 0.8){
     $desc= $_SESSION['order_desc'];
     $products_id= $_SESSION['products_id'];
     $products_qty= $_SESSION['products_qty'];
@@ -128,7 +141,8 @@ $total= $_SESSION['total'];
 ?>
 <section>
 <h1>Payment</h1>
-<form method="POST" novalidate>
+<form method="POST">
+    <input type="hidden" id="v-token" name="v-token">
     <fieldset>
         <legend style="font-size: 0.8em; color:red;">
         <ul>
@@ -153,7 +167,7 @@ $total= $_SESSION['total'];
     <strong>Delivery fee</strong>&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<span id="delivery_fee">0</span><br>
     <strong>Total</strong>&nbsp;<i class="fa-sharp fa-solid fa-right-long"></i>&nbsp;&#8358;<span id="tot_charges"><?= $total; ?></span><br>
     <input type="hidden" id="products_id" value="<?= implode(",", $_SESSION['products_id']); ?>"><input type="hidden" id="products_qty" value="<?= implode(",", $_SESSION['products_qty']); ?>">
-    <input type="submit" value="Make payment">
+    <input type="submit" id="submit" value="Make payment">
     </fieldset>
 </form>
 <br>

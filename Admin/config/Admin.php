@@ -64,11 +64,11 @@ Class Admin extends PDO{
                         ':ex'=> $exp
                     ));
                     $this->commit();
-                    $auth_url= _DOMAIN_."/admin/reset_password.php?token=$token&id=$admin_id";
+                    $auth_url= _DOMAIN_."/Admin/reset_password.php?token=$token&id=$admin_id";
                     //use mail(); function to   send auth link..
                     include_once("email.php");
-                    $body= adminAuth($email, $auth_url);
-                    send_mail($email,"Complete your registration", $body);
+                    $body= adminAuth($auth_url);
+                    send_mail(_ADMIN_,"Complete your registration", $body);
 
                     $_SESSION['info'] = "<div id='info'>Authentication link sent to your mail.</div>";
                     header("Location: index.php");

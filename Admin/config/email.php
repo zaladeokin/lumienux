@@ -1,4 +1,11 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require "PHPMailer/src/Exception.php";
+require "PHPMailer/src/PHPMailer.php";
+require "PHPMailer/src/SMTP.php";
 
 function header_tmp(){
     $domain= _DOMAIN_;
@@ -17,7 +24,7 @@ function header_tmp(){
             }
             header img{
                 margin: 0%;
-                width: 40vw;
+                width: 25vw;
             }
             main{
                 padding:5%;
@@ -50,13 +57,13 @@ function header_tmp(){
             /*      RWD      */
             @media all and (min-width:692px){
                 header img{
-                    width: 30vw;
+                    width: 20vw;
                 }
 
             }
             @media all and (min-width:992px){
                 header img{
-                    width: 25vw;
+                    width: 15vw;
                 }
             }
 
@@ -103,11 +110,22 @@ function adminAuth($link){
 
 
 function send_mail($to, $sub, $mes){
-    $headers = "From: Lumienux Solar \r\n";
-    $headers .= "Reply-To: "._ADMIN_."\r\n";
-    //$headers .= "CC: zaladeokin@gmail.com\r\n";//a copy is sent here also
-    //$headers .= "BCC: zaladeokin@gmail.com\r\n";//email copy is sent here too but can't see the bcc field
-    $headers .= "Content-Type: text/html; charset=ISO-8859-1 \r\n"; 
-    $headers .= "MIME-Version: 1.0 \r\n";
-    mail($to, $sub, header_tmp().$mes.footer_tmp(), $headers);
+    $mail= new PHPMailer();
+    $mail->Host= _MAIL_HOST_;
+    $mail->SMTPAuth= true;
+    $mail->Username= _MAIL_USER_;
+    $mail->Password= 'AZack#8448';
+    //$mail->SMTPSecure= 'ssl';
+    $mail->Port= 465;
+
+ 
+    $mail->setFrom(_MAIL_USER_);
+    $mail->addReplyTo(_MAIL_REPLY_, _MAIL_REPLY_NAME_);
+    $mail->addAddress($to);
+    $mail->isHTML(true);
+
+    $mail->Subject= $sub;
+    $mail->Body= header_tmp().$mes.footer_tmp();
+
+    $mail->send();
 }

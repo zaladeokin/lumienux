@@ -5,3 +5,4 @@ lib/
 temp/
 blog/
 Admin/config/.env
+Admin/config/PHPMailer/

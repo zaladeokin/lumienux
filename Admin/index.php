@@ -7,7 +7,17 @@ if(isset($_SESSION['Admin'])){
 }
 
 
-if(isset($_POST['email']) && isset($_POST['password'])){
+//reCaptcha validation
+if(isset($_POST['submit'])){//reCaptcha processing
+    $token= $_POST['g-recaptcha-response'];
+    $reCaptcha= reCaptchaVerify(_V2_SECRET_KEY_, $token);
+    $reCapVal= $reCaptcha->success;
+}else{
+    $reCapVal= false;
+}
+
+
+if(isset($_POST['email']) && isset($_POST['password']) && $reCapVal){
 
     $email= filter_var($_POST['email'], FILTER_SANITIZE_STRING); $pass= $_POST['password'];
 
@@ -48,14 +58,15 @@ $email= repopulate('email');
 
 <section>
   <h1>Admin Portal</h1>
-    <form method="POST">
+    <form method="POST" id="auth">
         <fieldset>
             <legend>
                 Login to proceed.
             </legend>
             <label>Email&nbsp;<input type="email" name="email" value="<?= $email; ?>"></label>
-            <label>Password&nbsp;<input type="password" name="password"></label>
-            <input type="submit" value="Submit">
+            <label>Password&nbsp;<input type="password" name="password"></label><br>
+            <div id="reV2" class="g-recaptcha"></div><br>
+            <input type="submit" name="submit" value="Submit">
         </fieldset>
     </form>
   </section>
