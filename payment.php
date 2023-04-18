@@ -63,7 +63,7 @@ if( isset($_POST['customer_email']) && $score > 0.8){
         );
         $customization= array(
             'title'=> 'Luminux solar product',
-            'logo'=> 'http://localhost/lumienux/img/brand_logo.png',
+            'logo'=> _DOMAIN_.'/img/brand_logo.png',
             'description'=> $desc
         );
     
@@ -72,7 +72,7 @@ if( isset($_POST['customer_email']) && $score > 0.8){
             'amount' => $total,
             'currency' => 'NGN',
             'payment_options' => 'card',
-            'redirect_url' => "http://localhost/lumienux/processed.php",
+            'redirect_url' => _DOMAIN_."/processed.php",
             'meta' => $meta,
             'customer' => $customer,
             'customizations' => $customization

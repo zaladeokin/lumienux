@@ -92,7 +92,7 @@ if(isset($_GET['status']) && isset($_SESSION['products_id'])){//$_SESSION['produ
 //View
 if($success){
     include_once('include/header.php');
-    summary($item);
+    echo summary($item);
     include_once('include/footer.php');
 }
 ?>
