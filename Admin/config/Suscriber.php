@@ -129,7 +129,7 @@ Class Suscriber extends PDO{
                         <strong>You might be interested in this product:</strong><br>
                         <p>$data[product_name] is now available for sale at the rate of $data[product_price].</p>
                         <p>$data[product_desc]</p>
-                        <a href="$checkout_url"><button>View product</button></a>
+                        <a href="$checkout_url"><button>View product</button></a><br>
                         _pro;
         
         //Send newsletter
@@ -151,7 +151,7 @@ Class Suscriber extends PDO{
                         <strong>New update on $data[product_name]</strong><br>
                         <p>$data[product_name] is now available for sale at the rate of $data[product_price].</p>
                         <p>$data[product_desc]</p>
-                        <a href="$checkout_url"><button>View product</button></a>
+                        <a href="$checkout_url"><button>View product</button></a><br>
                         _pro;
         
         //Send newsletter

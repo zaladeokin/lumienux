@@ -35,7 +35,7 @@ if($p_action == "upload"){//Product Upload
   $product->upload($_POST, $suscriber); 
   return;
 }elseif($p_action == 'edit'){//Edit Product
-  $product->edit_product($_POST);
+  $product->edit_product($_POST, $suscriber);
   return;
 }elseif($p_action == 'delete'){
   $product->delete_product($_POST['product_id']);
