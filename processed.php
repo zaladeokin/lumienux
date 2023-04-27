@@ -46,10 +46,10 @@ if(isset($_GET['status']) && isset($_SESSION['products_id'])){//$_SESSION['produ
             $amt_paid= $response->data->charged_amount;
             $products_id= json_decode($response->data->meta->product_id);
             $products_qty= json_decode($response->data->meta->qty);
+            $products_price= json_decode($response->data->meta->product_price);
             $expected_amount= 0;
             for($i=0; $i< count($products_id); $i++){
-                $item= $product->get_product(intval($products_id[$i]));
-                $expected_amount += intval($item['price']) * intval($products_qty[$i]);//Sum product price
+                $expected_amount += intval($products_price[$i]) * intval($products_qty[$i]);//Sum product price
             }
 
             if($amt_paid >= $expected_amount && $response->data->currency == 'NGN'){

@@ -1,7 +1,7 @@
 <?php
 require_once('config/autoload.php');
 
-function view_temp($id, $order, $product){
+function view_temp($id, $order){
     $get_order= $get_order= $order->get_order($id);
 
     if($get_order == false){
@@ -24,6 +24,8 @@ function view_temp($id, $order, $product){
     $card_exp= $get_order->data->card->expiry;
     //order Info
     $product_id= json_decode($get_order->data->meta->product_id);
+    $product_price= json_decode($get_order->data->meta->product_price);
+    $product_name= json_decode($get_order->data->meta->product_name);
     $qty= json_decode($get_order->data->meta->qty);
     $delivery_fee= $get_order->data->meta->delivery_fee;
     $state= json_decode($get_order->data->meta->state_info)->state;
@@ -54,11 +56,11 @@ function view_temp($id, $order, $product){
         _view;
     for($i=0; $i < count($product_id); $i++){
             $sN= $i + 1;
-            $item= $product->get_product($product_id[$i]);
-            $item_price= $item['price'];
+            $item=  $product_name[$i];
+            $item_price= $product_price[$i];
             $item_qty= $qty[$i];
             $tot= intval($item_price) * intval($item_qty);
-            echo "<tr><td>$sN</td><td>$item[name]</td><td>$item_price</td><td>$item_qty</td><td>$tot</td></tr>";
+            echo "<tr><td>$sN</td><td>$item</td><td>$item_price</td><td>$item_qty</td><td>$tot</td></tr>";
     } 
 
     echo <<<_view
@@ -76,7 +78,7 @@ function view_temp($id, $order, $product){
 
 //Js API Call for view
 if(isset($_POST['order_id'])){
-    view_temp($_POST['order_id'], $order, $product);
+    view_temp($_POST['order_id'], $order);
     return;
 }
 

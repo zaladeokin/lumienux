@@ -23,7 +23,7 @@ Any cookie work goes here....
 if( _CURRENT_FILE_ == 'index.php' || _CURRENT_FILE_ == 'reset_password.php' || _CURRENT_FILE_ == 'dbsetup.php' ){
     $admin= new Admin(_ADMIN_USER_, _ADMIN_PASS_);// Instatiate model class
 }
-if( _CURRENT_FILE_ == 'product.php' || _CURRENT_FILE_ == 'order.php' ){
+if( _CURRENT_FILE_ == 'product.php'){
     $product= new Product(_ADMIN_USER_, _ADMIN_PASS_);
 }
 if( _CURRENT_FILE_ == 'order.php' ){

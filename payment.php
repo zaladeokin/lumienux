@@ -43,6 +43,8 @@ if( isset($_POST['customer_email']) && $score > 0.8){
     $desc= $_SESSION['order_desc'];
     $products_id= $_SESSION['products_id'];
     $products_qty= $_SESSION['products_qty'];
+    $products_price= $_SESSION['products_price'];
+    $products_name= $_SESSION['products_name'];
     //Calculate delivery fee
     $del_fee= $deliveryFee->calculate_charges($_SESSION['products_id'], $_SESSION['products_qty'], $_POST['state'], $product);
     $total= intval($_SESSION['total']) + $del_fee;
@@ -56,6 +58,8 @@ if( isset($_POST['customer_email']) && $score > 0.8){
         $meta= array(
             'product_id'=> json_encode($products_id),
             'qty'=> json_encode($products_qty),
+            'product_price'=> json_encode($products_price),
+            'product_name'=> json_encode($products_name),
             'address'=> $_POST['customer_addr'],
             'delivery_fee' => $del_fee,
             'state_info' => json_encode($deliveryFee->get_state($_POST['state'])),
@@ -97,15 +101,21 @@ if( isset($_POST['customer_email']) && $score > 0.8){
 }elseif( isset($_POST['products_id']) ){
     $products_id= $_SESSION['products_id']= json_decode($_POST['products_id']);
     $products_qty= $_SESSION['products_qty']= json_decode($_POST['products_qty']);
+    $products_price= [];
+    $products_name= [];
     $desc= json_decode($_POST['order_desc']);
     $total= 0;
     $order_desc= [];
     availableQty($products_id, $products_qty, $product);
     for($i=0; $i< count($products_id); $i++){
         $item= $product->get_product(intval($products_id[$i]));
+        $products_price[]= $item['price'];
+        $products_name[]= $item['name'];
         $total += intval($item['price']) * intval($products_qty[$i]);//Sum product price
         $order_desc[$i]= $desc[$i]."(".$products_qty[$i].")";//Create desription for payment
     }
+    $_SESSION['products_price']= $products_price;
+    $_SESSION['products_name']= $products_name;
     $_SESSION['order_desc']= implode(", ", $order_desc);
     $_SESSION['total']= $total;
 

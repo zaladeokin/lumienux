@@ -128,9 +128,12 @@ main input[type="submit"]{
     min-width: 50%;
     max-width: 100%;
     margin: 0.5vh auto;
+    vertical-align: top;
 }
 #checkout figcaption{
     padding: 1vh 0.5vw;
+    white-space: pre-wrap;
+    line-height: normal;
 }
 #checkout div:nth-child(2) strong{
     display: block;
@@ -142,6 +145,7 @@ main input[type="submit"]{
     border-radius: 0.5em;
     background-color: var(--gr-bga);
     width: 80%;
+    min-height: 2em;
     font-size: 1em;
     font-style: oblique;
 }
