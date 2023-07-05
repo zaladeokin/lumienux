@@ -114,9 +114,9 @@ function send_mail($to, $sub, $mes){
     $mail->Host= _MAIL_HOST_;
     $mail->SMTPAuth= true;
     $mail->Username= _MAIL_USER_;
-    $mail->Password= 'AZack#8448';
+    $mail->Password= _MAIL_PASS_;
     //$mail->SMTPSecure= 'ssl';
-    $mail->Port= 465;
+    $mail->Port= _MAIL_PORT_;
 
  
     $mail->setFrom(_MAIL_USER_);
